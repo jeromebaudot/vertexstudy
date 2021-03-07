@@ -56,6 +56,13 @@ void readgentree::display( )
   c->Print("readgentree.pdf[");
 
   h1nvertex->Draw();
+  h1nreal->Draw();
+  h2nvtxchrgd->Draw("colz");
+  h1ncharged->Draw();
+  h1nneutral->Draw();
+  h1distance->Draw();
+  h1realdistance->Draw();
+  h2nparticles->Draw("colz");
 
   c->Print("readgentree.pdf]");
 
