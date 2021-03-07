@@ -24,129 +24,135 @@
 #include "TClonesArray.h"
 #include "TObject.h"
 
-class readgentree {
-public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-   Int_t           fCurrent; //!current Tree number in a TChain
+class readgentree
+{
+public:
+   TTree *fChain;  //!pointer to the analyzed TTree or TChain
+   Int_t fCurrent; //!current Tree number in a TChain
 
    // Fixed size dimensions of array or collections stored in the TTree if any.
-      static constexpr Int_t kMaxMCParticles = 100;
+   static constexpr Int_t kMaxMCParticles = 100;
 
-      // Declaration of leaf types
-    //Belle2::EventMetaData *EventMetaData;
-      UInt_t          fUniqueID;
-      UInt_t          fBits;
-      UInt_t          m_event;
-      Int_t           m_run;
-      Int_t           m_subrun;
-      Int_t           m_experiment;
-      Int_t           m_production;
-      ULong64_t       m_time;
-      string          m_parentLfn;
-      Double_t        m_generatedWeight;
-      UInt_t          m_errorFlag;
-    //Belle2::MCInitialParticles *MCInitialParticles;
-      TLorentzVector  m_her;
-      TLorentzVector  m_ler;
-      TVector3        m_vertex;
-      Bool_t          m_validFlag;
-      Int_t           m_generationFlags;
-      Int_t           MCParticles_;
-      UInt_t          MCParticles_fUniqueID[kMaxMCParticles];   //[MCParticles_]
-      UInt_t          MCParticles_fBits[kMaxMCParticles];   //[MCParticles_]
-      UShort_t        MCParticles_m_status[kMaxMCParticles];   //[MCParticles_]
-      Int_t           MCParticles_m_pdg[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_mass[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_energy[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_momentum_x[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_momentum_y[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_momentum_z[kMaxMCParticles];   //[MCParticles_]
-      Bool_t          MCParticles_m_validVertex[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_productionTime[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_productionVertex_x[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_productionVertex_y[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_productionVertex_z[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_decayTime[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_decayVertex_x[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_decayVertex_y[kMaxMCParticles];   //[MCParticles_]
-      Float_t         MCParticles_m_decayVertex_z[kMaxMCParticles];   //[MCParticles_]
-      Int_t           MCParticles_m_mother[kMaxMCParticles];   //[MCParticles_]
-      Int_t           MCParticles_m_firstDaughter[kMaxMCParticles];   //[MCParticles_]
-      Int_t           MCParticles_m_lastDaughter[kMaxMCParticles];   //[MCParticles_]
-      Int_t           MCParticles_m_secondaryPhysicsProcess[kMaxMCParticles];   //[MCParticles_]
-      UShort_t        MCParticles_m_seenIn_m_bits[kMaxMCParticles];   //[MCParticles_]
+   // Declaration of leaf types
+   //Belle2::EventMetaData *EventMetaData;
+   UInt_t fUniqueID;
+   UInt_t fBits;
+   UInt_t m_event;
+   Int_t m_run;
+   Int_t m_subrun;
+   Int_t m_experiment;
+   Int_t m_production;
+   ULong64_t m_time;
+   string m_parentLfn;
+   Double_t m_generatedWeight;
+   UInt_t m_errorFlag;
+   //Belle2::MCInitialParticles *MCInitialParticles;
+   TLorentzVector m_her;
+   TLorentzVector m_ler;
+   TVector3 m_vertex;
+   Bool_t m_validFlag;
+   Int_t m_generationFlags;
+   Int_t MCParticles_;
+   UInt_t MCParticles_fUniqueID[kMaxMCParticles];                //[MCParticles_]
+   UInt_t MCParticles_fBits[kMaxMCParticles];                    //[MCParticles_]
+   UShort_t MCParticles_m_status[kMaxMCParticles];               //[MCParticles_]
+   Int_t MCParticles_m_pdg[kMaxMCParticles];                     //[MCParticles_]
+   Float_t MCParticles_m_mass[kMaxMCParticles];                  //[MCParticles_]
+   Float_t MCParticles_m_energy[kMaxMCParticles];                //[MCParticles_]
+   Float_t MCParticles_m_momentum_x[kMaxMCParticles];            //[MCParticles_]
+   Float_t MCParticles_m_momentum_y[kMaxMCParticles];            //[MCParticles_]
+   Float_t MCParticles_m_momentum_z[kMaxMCParticles];            //[MCParticles_]
+   Bool_t MCParticles_m_validVertex[kMaxMCParticles];            //[MCParticles_]
+   Float_t MCParticles_m_productionTime[kMaxMCParticles];        //[MCParticles_]
+   Float_t MCParticles_m_productionVertex_x[kMaxMCParticles];    //[MCParticles_]
+   Float_t MCParticles_m_productionVertex_y[kMaxMCParticles];    //[MCParticles_]
+   Float_t MCParticles_m_productionVertex_z[kMaxMCParticles];    //[MCParticles_]
+   Float_t MCParticles_m_decayTime[kMaxMCParticles];             //[MCParticles_]
+   Float_t MCParticles_m_decayVertex_x[kMaxMCParticles];         //[MCParticles_]
+   Float_t MCParticles_m_decayVertex_y[kMaxMCParticles];         //[MCParticles_]
+   Float_t MCParticles_m_decayVertex_z[kMaxMCParticles];         //[MCParticles_]
+   Int_t MCParticles_m_mother[kMaxMCParticles];                  //[MCParticles_]
+   Int_t MCParticles_m_firstDaughter[kMaxMCParticles];           //[MCParticles_]
+   Int_t MCParticles_m_lastDaughter[kMaxMCParticles];            //[MCParticles_]
+   Int_t MCParticles_m_secondaryPhysicsProcess[kMaxMCParticles]; //[MCParticles_]
+   UShort_t MCParticles_m_seenIn_m_bits[kMaxMCParticles];        //[MCParticles_]
 
-      // List of branches
-      TBranch        *b_EventMetaData_fUniqueID;   //!
-      TBranch        *b_EventMetaData_fBits;   //!
-      TBranch        *b_EventMetaData_m_event;   //!
-      TBranch        *b_EventMetaData_m_run;   //!
-      TBranch        *b_EventMetaData_m_subrun;   //!
-      TBranch        *b_EventMetaData_m_experiment;   //!
-      TBranch        *b_EventMetaData_m_production;   //!
-      TBranch        *b_EventMetaData_m_time;   //!
-      TBranch        *b_EventMetaData_m_parentLfn;   //!
-      TBranch        *b_EventMetaData_m_generatedWeight;   //!
-      TBranch        *b_EventMetaData_m_errorFlag;   //!
-      TBranch        *b_MCInitialParticles_fUniqueID;   //!
-      TBranch        *b_MCInitialParticles_fBits;   //!
-      TBranch        *b_MCInitialParticles_m_her;   //!
-      TBranch        *b_MCInitialParticles_m_ler;   //!
-      TBranch        *b_MCInitialParticles_m_vertex;   //!
-      TBranch        *b_MCInitialParticles_m_time;   //!
-      TBranch        *b_MCInitialParticles_m_validFlag;   //!
-      TBranch        *b_MCInitialParticles_m_generationFlags;   //!
-      TBranch        *b_MCParticles_;   //!
-      TBranch        *b_MCParticles_fUniqueID;   //!
-      TBranch        *b_MCParticles_fBits;   //!
-      TBranch        *b_MCParticles_m_status;   //!
-      TBranch        *b_MCParticles_m_pdg;   //!
-      TBranch        *b_MCParticles_m_mass;   //!
-      TBranch        *b_MCParticles_m_energy;   //!
-      TBranch        *b_MCParticles_m_momentum_x;   //!
-      TBranch        *b_MCParticles_m_momentum_y;   //!
-      TBranch        *b_MCParticles_m_momentum_z;   //!
-      TBranch        *b_MCParticles_m_validVertex;   //!
-      TBranch        *b_MCParticles_m_productionTime;   //!
-      TBranch        *b_MCParticles_m_productionVertex_x;   //!
-      TBranch        *b_MCParticles_m_productionVertex_y;   //!
-      TBranch        *b_MCParticles_m_productionVertex_z;   //!
-      TBranch        *b_MCParticles_m_decayTime;   //!
-      TBranch        *b_MCParticles_m_decayVertex_x;   //!
-      TBranch        *b_MCParticles_m_decayVertex_y;   //!
-      TBranch        *b_MCParticles_m_decayVertex_z;   //!
-      TBranch        *b_MCParticles_m_mother;   //!
-      TBranch        *b_MCParticles_m_firstDaughter;   //!
-      TBranch        *b_MCParticles_m_lastDaughter;   //!
-      TBranch        *b_MCParticles_m_secondaryPhysicsProcess;   //!
-      TBranch        *b_MCParticles_m_seenIn_m_bits;   //!
+   // List of branches
+   TBranch *b_EventMetaData_fUniqueID;               //!
+   TBranch *b_EventMetaData_fBits;                   //!
+   TBranch *b_EventMetaData_m_event;                 //!
+   TBranch *b_EventMetaData_m_run;                   //!
+   TBranch *b_EventMetaData_m_subrun;                //!
+   TBranch *b_EventMetaData_m_experiment;            //!
+   TBranch *b_EventMetaData_m_production;            //!
+   TBranch *b_EventMetaData_m_time;                  //!
+   TBranch *b_EventMetaData_m_parentLfn;             //!
+   TBranch *b_EventMetaData_m_generatedWeight;       //!
+   TBranch *b_EventMetaData_m_errorFlag;             //!
+   TBranch *b_MCInitialParticles_fUniqueID;          //!
+   TBranch *b_MCInitialParticles_fBits;              //!
+   TBranch *b_MCInitialParticles_m_her;              //!
+   TBranch *b_MCInitialParticles_m_ler;              //!
+   TBranch *b_MCInitialParticles_m_vertex;           //!
+   TBranch *b_MCInitialParticles_m_time;             //!
+   TBranch *b_MCInitialParticles_m_validFlag;        //!
+   TBranch *b_MCInitialParticles_m_generationFlags;  //!
+   TBranch *b_MCParticles_;                          //!
+   TBranch *b_MCParticles_fUniqueID;                 //!
+   TBranch *b_MCParticles_fBits;                     //!
+   TBranch *b_MCParticles_m_status;                  //!
+   TBranch *b_MCParticles_m_pdg;                     //!
+   TBranch *b_MCParticles_m_mass;                    //!
+   TBranch *b_MCParticles_m_energy;                  //!
+   TBranch *b_MCParticles_m_momentum_x;              //!
+   TBranch *b_MCParticles_m_momentum_y;              //!
+   TBranch *b_MCParticles_m_momentum_z;              //!
+   TBranch *b_MCParticles_m_validVertex;             //!
+   TBranch *b_MCParticles_m_productionTime;          //!
+   TBranch *b_MCParticles_m_productionVertex_x;      //!
+   TBranch *b_MCParticles_m_productionVertex_y;      //!
+   TBranch *b_MCParticles_m_productionVertex_z;      //!
+   TBranch *b_MCParticles_m_decayTime;               //!
+   TBranch *b_MCParticles_m_decayVertex_x;           //!
+   TBranch *b_MCParticles_m_decayVertex_y;           //!
+   TBranch *b_MCParticles_m_decayVertex_z;           //!
+   TBranch *b_MCParticles_m_mother;                  //!
+   TBranch *b_MCParticles_m_firstDaughter;           //!
+   TBranch *b_MCParticles_m_lastDaughter;            //!
+   TBranch *b_MCParticles_m_secondaryPhysicsProcess; //!
+   TBranch *b_MCParticles_m_seenIn_m_bits;           //!
 
-  // Global variables needed for the analysis
-   int  nvertex;
-   int  nmothers;
-   int  vtxid;
-   int  vtxchrgd;
-   int  vtxntrl;
-   int  ndaughter[30];
-   int  ncharged[30];
-   int  nneutral[30];
-   bool treated[100];
-   std::vector<mvertex> vertexlist;
+   // Global variables needed for the analysis
+   int nvertex;
+   int nmothers;
+   int vtxreal;
+   int totalvtx;
+   int totalvtxreal;
+
+   std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
    // Histograms and ntuple
    TH1F *h1nvertex;
+   TH1F *h1nreal;
+   TH2F *h2nvtxchrgd;
+   TH1F *h1ncharged;
+   TH1F *h1nneutral;
+   TH1F *h1distance;
+   TH1F *h1realdistance;
+   TH2F *h2nparticles;
    TTree *outtree;
+   Mvertex *avertex;
 
    // Methods for reading the input tree
-   readgentree(TTree *tree=0);
+   readgentree(TTree *tree = 0);
    virtual ~readgentree();
-   virtual Int_t    Cut(Long64_t entry);
-   virtual Int_t    GetEntry(Long64_t entry);
+   virtual Int_t Cut(Long64_t entry);
+   virtual Int_t GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
-   virtual void     Loop( int nevents=0 );
-   virtual Bool_t   Notify();
-   virtual void     Show(Long64_t entry = -1);
+   virtual void Init(TTree *tree);
+   virtual void Loop(int nevents = 0);
+   virtual Bool_t Notify();
+   virtual void Show(Long64_t entry = -1);
 
    // Methods for the analysis
    int     ndaughters(int entry);
@@ -166,38 +172,44 @@ public :
 #ifdef readgentree_cxx
 readgentree::readgentree(TTree *tree) : fChain(0)
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi.root");
-      if (!f || !f->IsOpen()) {
+   // if parameter tree is not specified (or zero), connect the file
+   // used to generate this class and read the Tree.
+   if (tree == 0)
+   {
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi.root");
+      if (!f || !f->IsOpen())
+      {
          f = new TFile("B0toKsJPsi.root");
       }
-      f->GetObject("tree",tree);
-
+      f->GetObject("tree", tree);
    }
    Init(tree);
 }
 
 readgentree::~readgentree()
 {
-   if (!fChain) return;
+   if (!fChain)
+      return;
    delete fChain->GetCurrentFile();
 }
 
 Int_t readgentree::GetEntry(Long64_t entry)
 {
-// Read contents of entry.
-   if (!fChain) return 0;
+   // Read contents of entry.
+   if (!fChain)
+      return 0;
    return fChain->GetEntry(entry);
 }
 Long64_t readgentree::LoadTree(Long64_t entry)
 {
-// Set the environment to read one entry
-   if (!fChain) return -5;
+   // Set the environment to read one entry
+   if (!fChain)
+      return -5;
    Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
+   if (centry < 0)
+      return centry;
+   if (fChain->GetTreeNumber() != fCurrent)
+   {
       fCurrent = fChain->GetTreeNumber();
       Notify();
    }
@@ -215,7 +227,8 @@ void readgentree::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set branch addresses and branch pointers
-   if (!tree) return;
+   if (!tree)
+      return;
    fChain = tree;
    fCurrent = -1;
    fChain->SetMakeClass(1);
@@ -261,24 +274,38 @@ Bool_t readgentree::Notify()
 
 void readgentree::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
-   if (!fChain) return;
+   // Print contents of entry.
+   // If entry is not specified, print current entry
+   if (!fChain)
+      return;
    fChain->Show(entry);
 }
 Int_t readgentree::Cut(Long64_t entry)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
+   // This function may be called from Loop.
+   // returns  1 if entry is accepted.
+   // returns -1 otherwise.
    return 1;
 }
 
-void readgentree::addvertex( int id, int nc, int nn, double x, double y, double z)
+int readgentree::addvertex(int nc, int nn, int nR, bool vR, int vPdg, double x, double y, double z)
 {
-  mvertex v(id, nc, nn);
-  v.Addposition(x,y,z);
-  vertexlist.push_back(v);
+   int id = vertexlist.size();
+   Mvertex v(id, nc, nn, nR, vR, vPdg); // Create object
+   v.Addposition(x, y, z);              // Add position to the object
+   vertexlist.push_back(v);             // Add object to the list of vertices (vector)
+
+   return id; // return vertex ID
+}
+
+double readgentree::pTransverse(int id)
+{
+   return sqrt(pow(MCParticles_m_momentum_x[id], 2) + pow(MCParticles_m_momentum_y[id], 2));
+}
+
+double readgentree::prodAngle(int id)
+{
+   return acos(MCParticles_m_momentum_z[id] / sqrt(pow(MCParticles_m_momentum_x[id], 2) + pow(MCParticles_m_momentum_y[id], 2) + pow(MCParticles_m_momentum_z[id], 2))) * 180 / M_PI;
 }
 
 #endif // #ifdef readgentree_cxx

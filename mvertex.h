@@ -1,36 +1,92 @@
-#ifndef mvertex_h
-#define mvertex_h
+#ifndef Mvertex_h
+#define Mvertex_h
 
 #include <math.h>
 #include "TObject.h"
 
 
-class mvertex : public TObject {
+class Mvertex : public TObject
+{
 
-// Vertex class
+  // Vertex class
 
-private:
+  private:
+    int id;
+    int nCharged;
+    int nRstructed;
+    int nNeutral;
+    double position[3];
+    double radialpos;
+    bool vReal; // for real vertex = 1;
+    int vPdg;
+    // event nb
+    // nb of vertices
 
-  int Id;
-  int Ncharged;
-  int Nneutral;
-  double Position[3];
-  double Radialpos;
+  public:
+    Mvertex()
+    {
+      int id = 0;
+      int nCharged = 0;
+      int nNeutral = 0;
+      int nRstructed = 0;
+      bool vReal = 0;
+      int vPdg = 0;
+    }
+    Mvertex(int id_, int nChar, int nNeut, int nRstructed_, bool vReal_, int vPdg_)
+    {
+      id = id_;
+      nCharged = nChar;
+      nNeutral = nNeut;
+      nRstructed = nRstructed_;
+      vReal = vReal_;
+      vPdg = vPdg_;
+    }
+    virtual ~Mvertex() { ; }
 
-public:
+    int GetId() { return id; }
+    int GetNcharged() { return nCharged; }
+    int GetNneutral() { return nNeutral; }
+    int GetNrstructed() { return nRstructed; }
+    double GetRadialpos() { return radialpos; }
+    bool GetReal() { return vReal; }
+    int GetvPdg() { return vPdg; }
+    void AddId() { id++; }
+    void Addcharged() { nCharged++; }
+    void Addneutral() { nNeutral++; }
+    void Addrstructed() { nRstructed++; }
+    void isReal() //Test if the vertex is a fake one
+    {
+      if (nRstructed >= 2 )
+      {
+        vReal = 1;
+      }
+      else
+      {
+        vReal = 0;
+      }
+    }
 
-  mvertex() { int Id = 0; int Ncharged = 0; int Nneutral = 0; }
-  mvertex( int id, int nchar, int nneut) {  Id = id; Ncharged = nchar; Nneutral = nneut; }
-  virtual ~mvertex() {;}
+  void Addposition(double x, double y, double z)
+  {
+    position[0] = x;
+    position[1] = y;
+    position[2] = z;
+    radialpos = sqrt(x * x + y * y);
+  }
 
-  int      GetId()           { return Id; }
-  int      GetNcharged()     { return Ncharged; }
-  int      GetNneutral()     { return Nneutral; }
-  double   GetRadialpos()    { return Radialpos; }
-  void     Addcharged()      { Ncharged++; }
-  void     Addneutral()      { Nneutral++; }
-  void     Addposition( double x, double y, double z) {Position[0] = x; Position[1] = y; Position[2] = z; Radialpos = sqrt( x*x+y*y); }
-
+  void Copy( Mvertex avertex )
+  {
+    id = avertex.id;
+    nCharged  = avertex.nCharged;
+    nRstructed = avertex.nRstructed;
+    nNeutral = avertex.nNeutral;
+    position[0] = avertex.position[0];
+    position[1] = avertex.position[1];
+    position[2] = avertex.position[2];
+    radialpos = avertex.radialpos;
+    vReal = avertex.vReal;
+    vPdg = avertex.vPdg;
+  }
 };
 
-#endif // #ifndef mvertex_h
+#endif // #ifndef Mvertex_h
