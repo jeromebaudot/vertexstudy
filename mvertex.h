@@ -74,18 +74,18 @@ class Mvertex : public TObject
     radialpos = sqrt(x * x + y * y);
   }
 
-  void Copy( Mvertex avertex )
+  void Copy( Mvertex vertex )
   {
-    id = avertex.id;
-    nCharged  = avertex.nCharged;
-    nRstructed = avertex.nRstructed;
-    nNeutral = avertex.nNeutral;
-    position[0] = avertex.position[0];
-    position[1] = avertex.position[1];
-    position[2] = avertex.position[2];
-    radialpos = avertex.radialpos;
-    vReal = avertex.vReal;
-    vPdg = avertex.vPdg;
+    id = vertex.GetId();
+    nCharged  = vertex.GetNcharged();
+    nRstructed = vertex.GetNrstructed();
+    nNeutral = vertex.GetNneutral();
+    position[0] = vertex.position[0];
+    position[1] = vertex.position[1];
+    position[2] = vertex.position[2];
+    radialpos = vertex.GetRadialpos();
+    vReal = vertex.GetReal();
+    vPdg = vertex.GetvPdg();
   }
 };
 
