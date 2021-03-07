@@ -27,6 +27,21 @@ void readgentree::saving( )
 }
 
 //*****************************************************************
+void readgentree::display( )
+{
+ // Display all histo one by one on the same canvas
+ // Print them on an output file in PDF format
+
+  TCanvas *c = new TCanvas("c","vertex study",25,25,800,800);
+  c->Print("readgentree.pdf[");
+
+  h1nvertex->Draw();
+
+  c->Print("readgentree.pdf]");
+
+}
+
+//*****************************************************************
 void readgentree::Loop( int nevents )
 {
 //   In a ROOT session, you can do:
@@ -73,6 +88,7 @@ void readgentree::Loop( int nevents )
 
    } // end loop on events
 
+   display();
    saving();
 
 }

@@ -157,6 +157,7 @@ public :
    void    addvertex( int id, int nc, int nn, double x, double y, double z);
    void    booking();
    void    saving();
+   void    display();
 
 };
 
