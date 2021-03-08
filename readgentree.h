@@ -140,6 +140,7 @@ public:
    TH1F *h1distance;
    TH1F *h1realdistance;
    TH2F *h2nparticles;
+   TH2F *h2nrstructed;
    TTree *outtree;
    Mvertex *avertex;
 
@@ -155,16 +156,17 @@ public:
    virtual void Show(Long64_t entry = -1);
 
    // Methods for the analysis
-   int     ndaughters(int entry);
-   double  decaytime(int entry);
-   void    daughterloop(int first, int last, int &nC, int &nN);
-   int     particlecharge (int entry);
-   void    identifyVertex( );
-   void    addvertex( int id, int nc, int nn, double x, double y, double z);
-   void    booking();
-   void    saving();
-   void    display();
-
+   int ndaughters(int entry);
+   double decaytime(int entry);
+   void daughterloop(int first, int last, int vId);
+   int particlecharge(int entry);
+   void identifyVertex();
+   int addvertex(int nc, int nn, int nR, bool vR, int vPdg, double x, double y, double z);
+   double pTransverse(int id);
+   double prodAngle(int id);
+   void booking();
+   void saving();
+   void display();
 };
 
 #endif

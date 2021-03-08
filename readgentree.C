@@ -24,7 +24,9 @@ void readgentree::booking() //histogram
 
   h1realdistance = new TH1F("h1realdistance", "Distance/Real Vertex; Distance", 100, 0, 100); // over vertices
 
-  h2nparticles = new TH2F("h2nparticles", "# Neutral vs. # Charged;# Neutral; # Charged ", 30, 0, 10, 30, 0, 10); // over vertices
+  h2nparticles = new TH2F("h2nparticles", "# Neutral vs. # Charged;# Neutral; # Charged", 30, 0, 10, 30, 0, 10); // over vertices
+
+  h2nrstructed = new TH2F("h2nrstructed", "# Reconstructed vs. # Charged;# Charged; # Reconstructed", 30, 0, 10, 30, 0, 10); // over vertices
 }
 
 //*****************************************************************
@@ -42,7 +44,8 @@ void readgentree::saving() //saving the histogram
   h1distance->Write();
   h1realdistance->Write();
   h2nparticles->Write();
-
+  h2nrstructed->Write();
+  
   outFile.Close();
 }
 
@@ -63,13 +66,14 @@ void readgentree::display( )
   h1distance->Draw();
   h1realdistance->Draw();
   h2nparticles->Draw("colz");
+  h2nrstructed->Draw("colz");
 
   c->Print("readgentree.pdf]");
 
 }
 
 //*****************************************************************
-void readgentree::Loop( int nevents )
+void readgentree::Loop(int nevents)
 {
 //   In a ROOT session, you can do:
 //      root> .L readgentree.C
@@ -94,29 +98,37 @@ void readgentree::Loop( int nevents )
 // METHOD2: replace line
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
-   if (fChain == 0) return;
+  if (fChain == 0)
+    return;
 
-   booking();
+  booking();
 
-   Long64_t nentries = fChain->GetEntriesFast();
-   if( nevents==0 ) { nevents = nentries; }
+  Long64_t nentries = fChain->GetEntriesFast();
+  if (nevents == 0)
+  {
+    nevents = nentries;
+  }
 
-   Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nevents;jentry++) { // Start loop on events
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry = 0; jentry < nevents; jentry++)
+  { // Start loop on events
 
-      Long64_t ientry = LoadTree(jentry);
-      if (ientry < 0) break;
-      nb = fChain->GetEntry(jentry);   nbytes += nb;
-      // if (Cut(ientry) < 0) continue;
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0)
+      break;
+    nb = fChain->GetEntry(jentry);
+    nbytes += nb;
+    // if (Cut(ientry) < 0) continue;
 
-      cout << endl << "************************************" << endl;
-      cout << "Particles in event: " << MCParticles_ << endl;
-      identifyVertex();
+    cout << endl
+         << "************************************" << endl;
+    cout << "Event number: " << jentry << "\nParticles in event: " << MCParticles_ << endl;
+    identifyVertex();
 
-   } // end loop on events
+  } // end loop on events
 
-   display();
-   saving();
+  display();
+  saving();
 }
 
 //*****************************************************************
@@ -287,13 +299,14 @@ void readgentree::identifyVertex()
          << ", Real = " << vertexlist[i].GetReal() << ", PDGcode = " << vertexlist[i].GetvPdg() << ", Radial position: "
          << vertexlist[i].GetRadialpos() << endl;
 
-    avertex->Copy( vertexlist[i] );
-    outtree->Fill();
+    avertex->Copy( vertexlist[i] ); // Transfer vertex properties to separate object for tree fill
+    outtree->Fill(); // Fill tree branch 'vertex'
 
     h1ncharged->Fill(vertexlist[i].GetNcharged());
     h1nneutral->Fill(vertexlist[i].GetNneutral());
     h1distance->Fill(vertexlist[i].GetRadialpos());
     h2nparticles->Fill(vertexlist[i].GetNneutral(), vertexlist[i].GetNcharged());
+    h2nrstructed->Fill(vertexlist[i].GetNcharged(), vertexlist[i].GetNrstructed());
 
     if (vertexlist[i].GetReal() == 1)
     {
