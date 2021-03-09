@@ -143,6 +143,14 @@ public:
    TH2F *h2nrstructed;
    TTree *outtree;
    Mvertex *avertex;
+   struct event 
+   {
+      int eventid;
+      int nvtx;
+      int nvtxreal;
+   };
+
+   struct event counter;
 
    // Methods for reading the input tree
    readgentree(TTree *tree = 0);
@@ -160,7 +168,7 @@ public:
    double decaytime(int entry);
    void daughterloop(int first, int last, int vId);
    int particlecharge(int entry);
-   void identifyVertex();
+   void identifyVertex(int entry);
    int addvertex(int nc, int nn, int nR, bool vR, int vPdg, double x, double y, double z);
    double pTransverse(int id);
    double prodAngle(int id);

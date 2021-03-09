@@ -15,7 +15,7 @@ class Mvertex : public TObject
     int nCharged;
     int nRstructed;
     int nNeutral;
-    double position[3];
+    double position_x, position_y, position_z;
     double radialpos;
     bool vReal; // for real vertex = 1;
     int vPdg;
@@ -54,7 +54,7 @@ class Mvertex : public TObject
     void Addcharged() { nCharged++; }
     void Addneutral() { nNeutral++; }
     void Addrstructed() { nRstructed++; }
-    void isReal() //Test if the vertex is a fake one
+    bool isReal() //Test if the vertex is a fake one and return bool value for realness
     {
       if (nRstructed >= 2 )
       {
@@ -64,13 +64,14 @@ class Mvertex : public TObject
       {
         vReal = 0;
       }
+      return vReal;
     }
 
   void Addposition(double x, double y, double z)
   {
-    position[0] = x;
-    position[1] = y;
-    position[2] = z;
+    position_x = x;
+    position_y = y;
+    position_z = z;
     radialpos = sqrt(x * x + y * y);
   }
 
@@ -80,9 +81,9 @@ class Mvertex : public TObject
     nCharged  = vertex.GetNcharged();
     nRstructed = vertex.GetNrstructed();
     nNeutral = vertex.GetNneutral();
-    position[0] = vertex.position[0];
-    position[1] = vertex.position[1];
-    position[2] = vertex.position[2];
+    position_x = vertex.position_x;
+    position_y = vertex.position_y;
+    position_z = vertex.position_z;
     radialpos = vertex.GetRadialpos();
     vReal = vertex.GetReal();
     vPdg = vertex.GetvPdg();
