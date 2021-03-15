@@ -128,6 +128,7 @@ public:
    int vtxreal;
    int totalvtx;
    int totalvtxreal;
+   int nFinalCharged;
 
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
@@ -149,6 +150,7 @@ public:
       int nvtx;
       int nvtxreal;
    };
+   TFile *outfile;
 
    struct event counter;
 
@@ -186,10 +188,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi-100k.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("B0toKsJPsi.root");
+         f = new TFile("B0toKsJPsi-100k.root");
       }
       f->GetObject("tree", tree);
    }

@@ -2,9 +2,9 @@
 #include "readgentree.h"
 
 //*****************************************************************
-void readgentree::booking() //booking the histogram and tree
+void readgentree::booking() //booking the tree and histograms
 {
-  //TFile *f = new TFile("tree.root", "RECREATE");
+  outfile = new TFile("readgentree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
   avertex = new Mvertex();
@@ -31,9 +31,9 @@ void readgentree::booking() //booking the histogram and tree
 }
 
 //*****************************************************************
-void readgentree::saving() //saving the histogram
+void readgentree::saving() //saving the tree and histograms
 {
-  TFile outFile("readgentree.root", "RECREATE");
+  //TFile outFile("readgentree.root", "RECREATE");
 
   outtree->Write();
   h1nvertex->Write();
@@ -46,11 +46,11 @@ void readgentree::saving() //saving the histogram
   h2nparticles->Write();
   h2nrstructed->Write();
   
-  outFile.Close();
+  outfile->Close();
 }
 
 //*****************************************************************
-void readgentree::display( )
+void readgentree::display()
 {
  // Display all histo one by one on the same canvas
  // Print them on an output file in PDF format
@@ -171,7 +171,7 @@ int readgentree::particlecharge(int pdg) //This function is not used to calculat
 {
   int length = (int)log10(abs(pdg)) + 1;
 
-  if (length == 4) // protons or neutrons
+  if (length == 4) // sees only protons or neutrons for now...
   {
     int sum = (pdg / 1000 % 10) + (pdg / 100 % 10) + (pdg / 10 % 10);
 
@@ -238,7 +238,10 @@ void readgentree::daughterloop(int first, int last, int vId)
         vertexlist[vId].Addrstructed();
       }
 
-      vertexlist[vId].isReal();
+      if(!vertexlist[vId].GetReal())
+      {        
+        vertexlist[vId].IsReal();
+      }
       
       cout << "Vertex: " << vId <<  ", Index no. " << d  << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
       << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
@@ -260,8 +263,8 @@ void readgentree::daughterloop(int first, int last, int vId)
     {
       if (particlecharge(MCParticles_m_pdg[d - 1]) == 1)
       {
-        vertexlist[vId].Addcharged(); //To be checked, do we account for intermediate vertices? No
-        //vertexlist[vId].isReal();
+        //vertexlist[vId].Addcharged(); //To be checked, do we account for intermediate vertices? No
+        //vertexlist[vId].IsReal();
       }
       else
       {
@@ -320,6 +323,7 @@ void readgentree::identifyVertex(int event_id)
   for (int i = 0; i < vertexlist.size(); i++)
   {
     vtxreal += int(vertexlist[i].GetReal());
+    nFinalCharged += vertexlist[i].GetNcharged();
   }
 
   // Update event counter branch
@@ -393,6 +397,7 @@ void readgentree::identifyVertex(int event_id)
   h1nreal->Fill(vtxreal);
 
   cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal Event Vertices: " << vtxreal << endl;
+  cout << "\nNumber of final charged particles: " << nFinalCharged << endl;
 
   totalvtx += vertexlist.size();
   totalvtxreal += vtxreal;

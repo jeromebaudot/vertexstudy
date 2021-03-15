@@ -6,7 +6,7 @@ void simplefunction()
     // parameter [0] = r (m)
 
     TH1F *h = new TH1F( "h","Track divergence; Transverse Momentum (GeV/c); #delta (m)", 100, 0, 1);
-    h->SetMaximum(.003); 
+    h->SetMaximum(.1); 
     h->Draw();
 
     TF1 *f = new TF1("f", "x/(0.3*1.5)*(1 - sqrt(1 - pow(([0]*0.3*1.5)/x, 2))) ", 0, 1);
@@ -15,9 +15,19 @@ void simplefunction()
     f->SetLineColor(2);
     f->DrawClone("same");
     
-    f->SetParameter(0, 5.e-3);
+    f->SetParameter(0, 22.e-3);
     f->SetLineColor(3);
     f->DrawClone("same");
+
+    //f->SetParameter(0, 135.e-3);
+    //f->SetLineColor(4);
+    //f->DrawClone("same");
+
+    TF1 *d = new TF1("d", "0.3*1.5*pow([0],2)/(8*x)", 0, 1);
+
+    d->SetParameter(0, 135.e-3);
+    d->SetLineColor(4);
+    d->DrawClone("same");
 
     gPad->SetGrid(1, 1);
     gPad->SetLogx();

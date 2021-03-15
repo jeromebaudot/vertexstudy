@@ -54,7 +54,7 @@ class Mvertex : public TObject
     void Addcharged() { nCharged++; }
     void Addneutral() { nNeutral++; }
     void Addrstructed() { nRstructed++; }
-    bool isReal() //Test if the vertex is a fake one and return bool value for realness
+    bool IsReal() //Test if the vertex is a fake one and return bool value for realness
     {
       if (nRstructed >= 2 )
       {
