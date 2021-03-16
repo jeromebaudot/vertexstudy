@@ -15,6 +15,7 @@ class Mvertex : public TObject
     int nCharged;
     int nRstructed;
     int nNeutral;
+    int nFinalcharged;
     double position_x, position_y, position_z;
     double radialpos;
     bool vReal; // for real vertex = 1;
@@ -29,15 +30,17 @@ class Mvertex : public TObject
       int nCharged = 0;
       int nNeutral = 0;
       int nRstructed = 0;
+      int nFinalcharged = 0;
       bool vReal = 0;
       int vPdg = 0;
     }
-    Mvertex(int id_, int nChar, int nNeut, int nRstructed_, bool vReal_, int vPdg_)
+    Mvertex(int id_, int nChar, int nNeut, int nRstructed_, int nFinalcharged_, bool vReal_, int vPdg_)
     {
       id = id_;
       nCharged = nChar;
       nNeutral = nNeut;
       nRstructed = nRstructed_;
+      nFinalcharged = nFinalcharged_;
       vReal = vReal_;
       vPdg = vPdg_;
     }
@@ -47,6 +50,7 @@ class Mvertex : public TObject
     int GetNcharged() { return nCharged; }
     int GetNneutral() { return nNeutral; }
     int GetNrstructed() { return nRstructed; }
+    int GetNFinalcharged() { return nFinalcharged; }
     double GetRadialpos() { return radialpos; }
     bool GetReal() { return vReal; }
     int GetvPdg() { return vPdg; }
@@ -54,6 +58,7 @@ class Mvertex : public TObject
     void Addcharged() { nCharged++; }
     void Addneutral() { nNeutral++; }
     void Addrstructed() { nRstructed++; }
+    void Addfinalcharged() { nFinalcharged++; }
     bool IsReal() //Test if the vertex is a fake one and return bool value for realness
     {
       if (nRstructed >= 2 )
@@ -81,6 +86,7 @@ class Mvertex : public TObject
     nCharged  = vertex.GetNcharged();
     nRstructed = vertex.GetNrstructed();
     nNeutral = vertex.GetNneutral();
+    nFinalcharged = vertex.GetNFinalcharged();
     position_x = vertex.position_x;
     position_y = vertex.position_y;
     position_z = vertex.position_z;

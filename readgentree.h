@@ -128,7 +128,8 @@ public:
    int vtxreal;
    int totalvtx;
    int totalvtxreal;
-   int nFinalCharged;
+   int totalFcharged;
+   int totalRcharged;
 
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
@@ -146,7 +147,7 @@ public:
    Mvertex *avertex;
    struct event 
    {
-      int eventid;
+      int id;
       int nvtx;
       int nvtxreal;
    };
@@ -171,7 +172,7 @@ public:
    void daughterloop(int first, int last, int vId);
    int particlecharge(int entry);
    void identifyVertex(int entry);
-   int addvertex(int nc, int nn, int nR, bool vR, int vPdg, double x, double y, double z);
+   int addvertex(int nc, int nn, int nR, int nFc, bool vR, int vPdg, double x, double y, double z);
    double pTransverse(int id);
    double prodAngle(int id);
    void booking();
@@ -188,10 +189,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi-100k.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("B0toKsJPsi-100k.root");
+         f = new TFile("B0toKsJPsi.root");
       }
       f->GetObject("tree", tree);
    }
@@ -300,10 +301,10 @@ Int_t readgentree::Cut(Long64_t entry)
    return 1;
 }
 
-int readgentree::addvertex(int nc, int nn, int nR, bool vR, int vPdg, double x, double y, double z)
+int readgentree::addvertex(int nc, int nn, int nR, int nFc, bool vR, int vPdg, double x, double y, double z)
 {
    int id = vertexlist.size();
-   Mvertex v(id, nc, nn, nR, vR, vPdg); // Create object
+   Mvertex v(id, nc, nn, nR, nFc, vR, vPdg); // Create object
    v.Addposition(x, y, z);              // Add position to the object
    vertexlist.push_back(v);             // Add object to the list of vertices (vector)
 
