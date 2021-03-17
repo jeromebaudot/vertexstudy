@@ -1,0 +1,5 @@
+#File to ignore the root and pdf files 
+*.root
+*.pdf
+
+
