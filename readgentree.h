@@ -126,32 +126,32 @@ public:
    int nvertex;
    int nmothers;
    int vtxreal;
+   int Neutral;
+   int Charged;
+   int Fcharged;
+   int Rcharged;
    int totalvtx;
    int totalvtxreal;
    int totalFcharged;
    int totalRcharged;
-
+   
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
-   // Histograms and ntuple
-   TH1F *h1nvertex;
-   TH1F *h1nreal;
-   TH2F *h2nvtxchrgd;
-   TH1F *h1ncharged;
-   TH1F *h1nneutral;
-   TH1F *h1distance;
-   TH1F *h1realdistance;
-   TH2F *h2nparticles;
-   TH2F *h2nrstructed;
+   //Tree, File and struc 
+ 
    TTree *outtree;
-   Mvertex *avertex;
-   struct event 
-   {
-      int id;
-      int nvtx;
-      int nvtxreal;
-   };
    TFile *outfile;
+   Mvertex *avertex;
+   struct event
+   {
+      int e_id;        //id of the event
+      int e_nvtx;      //Number of vertices in the event
+      int e_nvtxreal;  //Number of real vertices in the event
+      int e_nNeutral;  //Number of neutral particles in the event 
+      int e_nCharged;  //Number of charged particles in the event 
+      int e_nFcharged; //Number of final charged particles in the event
+      int e_nRcharged; //Number of reconstructible charged particles in the event
+   }; 
 
    struct event counter;
 
@@ -172,7 +172,7 @@ public:
    void daughterloop(int first, int last, int vId);
    int particlecharge(int entry);
    void identifyVertex(int entry);
-   int addvertex(int nc, int nn, int nR, int nFc, bool vR, int vPdg, double x, double y, double z);
+   int addvertex(int nc, int nn, int nR, int nFc, int vR, int vPdg, double x, double y, double z);
    double pTransverse(int id);
    double prodAngle(int id);
    void booking();
@@ -301,12 +301,12 @@ Int_t readgentree::Cut(Long64_t entry)
    return 1;
 }
 
-int readgentree::addvertex(int nc, int nn, int nR, int nFc, bool vR, int vPdg, double x, double y, double z)
+int readgentree::addvertex(int nc, int nn, int nR, int nFc, int vR, int vPdg, double x, double y, double z)
 {
    int id = vertexlist.size();
    Mvertex v(id, nc, nn, nR, nFc, vR, vPdg); // Create object
-   v.Addposition(x, y, z);              // Add position to the object
-   vertexlist.push_back(v);             // Add object to the list of vertices (vector)
+   v.Addposition(x, y, z);                   // Add position to the object
+   vertexlist.push_back(v);                  // Add object to the list of vertices (vector)
 
    return id; // return vertex ID
 }

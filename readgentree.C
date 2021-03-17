@@ -4,30 +4,13 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("readgentree.root", "RECREATE");
+  outfile = new TFile("B0toKsJPsi-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
+
   avertex = new Mvertex();
-  outtree->Branch( "vertex", "Mvertex", &avertex ); // Create branch for vertex properties
-  outtree->Branch( "event", &counter, "id/I:nvtx/I:nvtxreal/I"); // Create branch for event counter
-
-  h1nvertex = new TH1F("h1nvertex", "# Vertices/Event;# Vertices", 10, 0, 10); // over events
-
-  h1nreal = new TH1F("h1nreal", "# Real Vertices/Event;# Real Vertices", 10, 0, 10); // over events
-
-  h2nvtxchrgd = new TH2F("h2nvtxchrgd", "# Vertices/Event vs. # Charged;# Charged/Vertex; # Vertices/Event ", 30, 0, 10, 30, 0, 10); // over events
-
-  h1ncharged = new TH1F("h1ncharged", "# Charged/Vertex;# Charged", 20, 0, 20); // over vertices
-
-  h1nneutral = new TH1F("h1nneutral", "# Neutral/Vertex;# Neutral", 20, 0, 20); // over vertices
-
-  h1distance = new TH1F("h1distance", "Distance/Vertex; Distance", 300, 0, 10); // over vertices
-
-  h1realdistance = new TH1F("h1realdistance", "Distance/Real Vertex; Distance", 300, 0, 10); // over vertices
-
-  h2nparticles = new TH2F("h2nparticles", "# Neutral vs. # Charged;# Neutral; # Charged", 30, 0, 10, 30, 0, 10); // over vertices
-
-  h2nrstructed = new TH2F("h2nrstructed", "# Reconstructed vs. # Charged;# Charged; # Reconstructed", 30, 0, 10, 30, 0, 10); // over vertices
+  outtree->Branch("vertex", "Mvertex", &avertex); // Create branch for vertex properties
+  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal/I:e_nCharged/I:e_nNeutral/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
 }
 
 //*****************************************************************
@@ -36,79 +19,35 @@ void readgentree::saving() //saving the tree and histograms
   //TFile outFile("readgentree.root", "RECREATE");
 
   outtree->Write();
-  h1nvertex->Write();
-  h1nreal->Write();
-  h2nvtxchrgd->Write();
-  h1ncharged->Write();
-  h1nneutral->Write();
-  h1distance->Write();
-  h1realdistance->Write();
-  h2nparticles->Write();
-  h2nrstructed->Write();
-  
   outfile->Close();
-}
-
-//*****************************************************************
-void readgentree::display()
-{
- // Display all histo one by one on the same canvas
- // Print them on an output file in PDF format
-
-  TCanvas *c = new TCanvas("c","vertex study",25,25,800,800);
-  c->Print("readgentree.pdf[");
-
-  h1nvertex->Draw();
-  c->Print("readgentree.pdf");
-  h1nreal->Draw();
-  c->Print("readgentree.pdf");
-  h2nvtxchrgd->Draw("colz");
-  c->Print("readgentree.pdf");
-  h1ncharged->Draw();
-  c->Print("readgentree.pdf");
-  h1nneutral->Draw();
-  c->Print("readgentree.pdf");
-  c->SetLogx();
-  h1distance->Draw();
-  c->Print("readgentree.pdf");
-  h1realdistance->Draw();
-  c->Print("readgentree.pdf");
-  c->SetLogx(0);
-  h2nparticles->Draw("colz");
-  c->Print("readgentree.pdf");
-  h2nrstructed->Draw("colz");
-  c->Print("readgentree.pdf");
-
-  c->Print("readgentree.pdf]");
-
 }
 
 //*****************************************************************
 void readgentree::Loop(int nevents)
 {
-//   In a ROOT session, you can do:
-//      root> .L readgentree.C
-//      root> readgentree t
-//      root> t.GetEntry(12); // Fill t data members with entry number 12
-//      root> t.Show();       // Show values of entry 12
-//      root> t.Show(16);     // Read and show values of entry 16
-//      root> t.Loop();       // Loop on all entries
-//
+  //   In a ROOT session, you can do:
+  //      root> .L readgentree.C
+  //      root> readgentree t
+  //      root> t.GetEntry(12); // Fill t data members with entry number 12
+  //      root> t.Show();       // Show values of entry 12
+  //      root> t.Show(16);     // Read and show values of entry 16
+  //      root> t.Loop();       // Loop on all entries
+  //
 
-//     This is the loop skeleton where:
-//    jentry is the global entry number in the chain
-//    ientry is the entry number in the current Tree
-//  Note that the argument to GetEntry must be:
-//    jentry for TChain::GetEntry
-//    ientry for TTree::GetEntry and TBranch::GetEntry
-//
-//       To read only selected branches, Insert statements like:
-// METHOD1:
-//    fChain->SetBranchStatus("*",0);  // disable all branches
-//    fChain->SetBranchStatus("branchname",1);  // activate branchname
-// METHOD2: replace line
-//    fChain->GetEntry(jentry);       //read all branches
-//by  b_branchname->GetEntry(ientry); //read only this branch
+  //     This is the loop skeleton where:
+  //    jentry is the global entry number in the chain
+  //    ientry is the entry number in the current Tree
+  //  Note that the argument to GetEntry must be:
+  //    jentry for TChain::GetEntry
+  //    ientry for TTree::GetEntry and TBranch::GetEntry
+  //
+  //       To read only selected branches, Insert statements like:
+  // METHOD1:
+  //    fChain->SetBranchStatus("*",0);  // disable all branches
+  //    fChain->SetBranchStatus("branchname",1);  // activate branchname
+  // METHOD2: replace line
+  //    fChain->GetEntry(jentry);       //read all branches
+  //by  b_branchname->GetEntry(ientry); //read only this branch
   if (fChain == 0)
     return;
 
@@ -133,19 +72,18 @@ void readgentree::Loop(int nevents)
 
     cout << endl
          << "************************************" << endl;
-    cout << "Event Id: " << jentry+1 << "\nParticles in event: " << MCParticles_ << endl;
+    cout << "Event Id: " << jentry + 1 << "\nParticles in event: " << MCParticles_ << endl;
     identifyVertex(jentry);
 
   } // end loop on events
 
-  display();
   saving();
 }
 
 //*****************************************************************
 int readgentree::ndaughters(int x)
 {
-  int nb = 0; 
+  int nb = 0;
 
   if (MCParticles_m_lastDaughter[x] != 0 && MCParticles_m_firstDaughter[x] != 0)
   {
@@ -238,21 +176,29 @@ void readgentree::daughterloop(int first, int last, int vId)
     if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 1) // final charged particle
     {
       vertexlist[vId].Addcharged();
-      vertexlist[vId].Addfinalcharged();
+      
+      // (No quarks as final charged particles)
+      if (abs(MCParticles_m_pdg[d - 1]) > 10)
+      {
+        vertexlist[vId].Addfinalcharged();
+      }
 
       // Check reconstructibility conditions
-      if (pTransverse(d - 1) > 0.05 && prodAngle(d - 1) > 31 && prodAngle(d - 1) < 163)
+      // (No quarks as reconstructed particles)
+      if (pTransverse(d - 1) > 0.05 && prodAngle(d - 1) > 31 && prodAngle(d - 1) < 163 && abs(MCParticles_m_pdg[d - 1]) > 10)
       {
         vertexlist[vId].Addrstructed();
       }
 
-      if(!vertexlist[vId].GetReal())
-      {        
+      if (vertexlist[vId].GetReal()<3)
+      {
         vertexlist[vId].IsReal();
       }
-      
-      cout << "Vertex: " << vId <<  ", Index no. " << d  << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
-      << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
+
+      cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
+
+      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
+      //     << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
     }
 
     else if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 0) // final neutral particle
@@ -272,7 +218,11 @@ void readgentree::daughterloop(int first, int last, int vId)
       if (particlecharge(MCParticles_m_pdg[d - 1]) == 1)
       {
         vertexlist[vId].Addcharged(); //To be checked, do we account for intermediate vertices? No
-        //vertexlist[vId].IsReal();
+        
+        if (vertexlist[vId].GetReal()<1) 
+        {
+          vertexlist[vId].IsReal();
+        }
       }
       else
       {
@@ -321,6 +271,10 @@ void readgentree::identifyVertex(int event_id)
 
   vertexlist.resize(0); // Reinitialize vertex list vector
   vtxreal = 0;          // Reinitialize no. of real vertices
+  Charged = 0;
+  Neutral = 0;
+  Fcharged = 0;
+  Rcharged = 0;
 
   double skip = 0;
   for (int i = 0; i < MCParticles_; i++)
@@ -337,27 +291,34 @@ void readgentree::identifyVertex(int event_id)
     }
     else
     {
-      cout << "The particle with PDG code : " << MCParticles_m_pdg[i] << " ,Nb of daughters: " << ndaughters(i) << " ,index of mother: "
-           << MCParticles_m_mother[i] << " is skipped " << endl;
+      //cout << "The particle with PDG code : " << MCParticles_m_pdg[i] << " ,Nb of daughters: " << ndaughters(i) << " ,index of mother: "
+      //     << MCParticles_m_mother[i] << " is skipped " << endl;
       skip++;
     }
   }
   cout << "The number of skipped particles is: " << skip << endl;
-  
+
   // Update counts for real vertices
   for (int i = 0; i < vertexlist.size(); i++)
   {
-    vtxreal += int(vertexlist[i].GetReal());
-    totalFcharged += vertexlist[i].GetNFinalcharged();
-    totalRcharged += vertexlist[i].GetNrstructed();
+    if (vertexlist[i].GetReal()==3)
+    {
+      vtxreal++;
+    }
+    Neutral  += vertexlist[i].GetNneutral();
+    Charged += vertexlist[i].GetNcharged();
+    Fcharged += vertexlist[i].GetNFinalcharged();
+    Rcharged += vertexlist[i].GetNrstructed();
   }
 
   // Update event counter branch
-  counter.id = event_id;
-  counter.nvtx = vertexlist.size();
-  counter.nvtxreal = vtxreal;
-
-  h1nvertex->Fill(vertexlist.size());
+  counter.e_id = event_id;
+  counter.e_nvtx = vertexlist.size();
+  counter.e_nvtxreal = vtxreal;
+  counter.e_nCharged = Charged;
+  counter.e_nNeutral = Neutral;
+  counter.e_nFcharged = Fcharged;
+  counter.e_nRcharged = Rcharged;
 
   // Loop over vertices to fill tree and print
   for (int i = 0; i < vertexlist.size(); i++)
@@ -367,66 +328,16 @@ void readgentree::identifyVertex(int event_id)
          << ", nFinalcharged = " << vertexlist[i].GetNFinalcharged() << ", Real = " << vertexlist[i].GetReal() << ", PDGcode = " << vertexlist[i].GetvPdg() << ", Radial position: "
          << vertexlist[i].GetRadialpos() << endl;
 
-    avertex->Copy( vertexlist[i] ); // Transfer vertex properties to a separate object for tree fill
-    outtree->Fill(); // Fill all tree branches
-
-    h1ncharged->Fill(vertexlist[i].GetNcharged());
-    h1nneutral->Fill(vertexlist[i].GetNneutral());
-    h1distance->Fill(vertexlist[i].GetRadialpos());
-    h2nparticles->Fill(vertexlist[i].GetNneutral(), vertexlist[i].GetNcharged());
-    h2nrstructed->Fill(vertexlist[i].GetNcharged(), vertexlist[i].GetNrstructed());
-
-    if (vertexlist[i].GetReal())
-    {
-      h1realdistance->Fill(vertexlist[i].GetRadialpos());
-    }
-
-    switch (vertexlist[i].GetNcharged())
-    {
-
-    case 0:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 1:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 2:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 3:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 4:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 5:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 6:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 7:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 8:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 9:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-
-    case 10:
-      h2nvtxchrgd->Fill(vertexlist[i].GetNcharged(), vertexlist.size());
-    }
+    avertex->Copy(vertexlist[i]); // Transfer vertex properties to a separate object for tree fill
+    outtree->Fill();              // Fill all tree branches
   }
-
-  h1nreal->Fill(vtxreal);
-
   cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal Event Vertices: " << vtxreal << endl;
-  cout << "\nNumber of final charged particles: " << totalFcharged 
-       << "\nNumber of reconstructible particles: " << totalRcharged << endl;
 
   totalvtx += vertexlist.size();
   totalvtxreal += vtxreal;
+  totalFcharged += Fcharged;
+  totalRcharged += Rcharged;
 
   cout << "\n# Vertices Total: " << totalvtx << "\n# Real Vertices Total: " << totalvtxreal << endl;
+  cout << "\n# Final Charged Particles Total: " << totalFcharged << "\n# Reconstructible Particles Total: " << totalRcharged << endl;
 }

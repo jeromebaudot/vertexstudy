@@ -3,7 +3,7 @@ void simplefunction()
     // x = momentum (GeV/c)
     // f = difference (m) = R sqrt(1- r*r/(R*R))
     // R = x / 0.3 B  wit B = 1.5 T
-    // parameter [0] = r (m)
+    // parameter [0] = r (m) Beam pipe radius
 
     TH1F *h = new TH1F( "h","Track divergence; Transverse Momentum (GeV/c); #delta (m)", 100, 0, 1);
     h->SetMaximum(.1); 

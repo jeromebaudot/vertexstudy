@@ -18,10 +18,8 @@ class Mvertex : public TObject
     int nFinalcharged;
     double position_x, position_y, position_z;
     double radialpos;
-    bool vReal; // for real vertex = 1;
+    int vReal; // for real vertex = 1;
     int vPdg;
-    // event nb
-    // nb of vertices
 
   public:
     Mvertex()
@@ -31,10 +29,10 @@ class Mvertex : public TObject
       int nNeutral = 0;
       int nRstructed = 0;
       int nFinalcharged = 0;
-      bool vReal = 0;
+      int vReal = 0;
       int vPdg = 0;
     }
-    Mvertex(int id_, int nChar, int nNeut, int nRstructed_, int nFinalcharged_, bool vReal_, int vPdg_)
+    Mvertex(int id_, int nChar, int nNeut, int nRstructed_, int nFinalcharged_, int vReal_, int vPdg_)
     {
       id = id_;
       nCharged = nChar;
@@ -52,20 +50,28 @@ class Mvertex : public TObject
     int GetNrstructed() { return nRstructed; }
     int GetNFinalcharged() { return nFinalcharged; }
     double GetRadialpos() { return radialpos; }
-    bool GetReal() { return vReal; }
+    int GetReal() { return vReal; }
     int GetvPdg() { return vPdg; }
     void AddId() { id++; }
     void Addcharged() { nCharged++; }
     void Addneutral() { nNeutral++; }
     void Addrstructed() { nRstructed++; }
     void Addfinalcharged() { nFinalcharged++; }
-    bool IsReal() //Test if the vertex is a fake one and return bool value for realness
+    int IsReal() //Test if the vertex is a fake one and return bool value for realness
     {
-      if (nRstructed >= 2 )
+      if (nRstructed >= 2) // at least 2 reconstructible (lvl 3)
+      {
+        vReal = 3;
+      }
+      else if (nFinalcharged >= 2) // at least 2 final charged (lvl 2)
+      {
+        vReal = 2;
+      }
+      else if (nCharged >= 2) // at least 2 charged (lvl 1)
       {
         vReal = 1;
       }
-      else
+      else // just a vertex (lvl 0)
       {
         vReal = 0;
       }
