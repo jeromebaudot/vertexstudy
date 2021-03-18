@@ -103,64 +103,67 @@ double readgentree::decaytime(int x)
 }
 
 //*****************************************************************
-int readgentree::particlecharge(int pdg) // This function is not used to calculate the charge of resonance
+int readgentree::particlecharge(int pdg) // This function is not used to calculate the amount of charge yet...
 {
   int length = (int)log10(abs(pdg)) + 1;
 
-  if (length == 4) // sees only protons or neutrons for now...
+  switch (length)
   {
-    int sum = (pdg / 1000 % 10) + (pdg / 100 % 10) + (pdg / 10 % 10);
-
-    if ((sum % 2) == 0)
+    case 4: // sees only protons, neutrons and light baryons for now...
     {
-      return 0; // 0 is neutral
-    }
-    else
-    {
-      return 1; // 1 is charged
-    }
-  }
+      int sum = (abs(pdg) / 1000 % 10) + (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
 
-  else if (length == 3) // mesons
-  {
-    int sum = (pdg / 100 % 10) + (pdg / 10 % 10);
-
-    if ((sum % 2) == 0)
-    {
-      return 0;
+      if ((sum % 2) == 0)
+      {
+        return 0; // 0 is neutral
+      }
+      else
+      {
+        return 1; // 1 is charged
+      }
     }
-    else
+    break;
+    case 3: // mesons
+    {
+      int sum = (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
+
+      if ((sum % 2) == 0)
+      {
+        return 0;
+      }
+      else
+      {
+        return 1;
+      }
+    }
+    break;
+    case 2: // leptons or gauge bosons
+    {
+      if (abs(pdg) == 21 || abs(pdg) == 23) // gluon or Z boson cases
+      {
+        return 0;
+      }
+      else if ((abs(pdg) % 2) == 0)
+      {
+        return 0;
+      }
+      else
+      {
+        return 1;
+      }
+    }
+    break;
+    case 1: // quarks
     {
       return 1;
     }
-  }
-
-  else if (length == 2) // leptons or gauge bosons
-  {
-    if (pdg == 21 || pdg == 23) // gluon or Z boson cases
+    break;
+    default:
     {
-      return 0;
-    }
-    else if ((pdg % 2) == 0)
-    {
-      return 0;
-    }
-    else
-    {
-      return 1;
-    }
-  }
-
-  else if (length == 1) // quarks
-  {
-    return 1;
-  }
-
-  else
-  {
-    cout << "Error: pdg code " << pdg << " not accounted for."
+      cout << "Error: pdg code " << pdg << " not accounted for."
          << ", Length: " << length << endl;
-    return pdg;
+      return pdg;
+    }
   }
 }
 
