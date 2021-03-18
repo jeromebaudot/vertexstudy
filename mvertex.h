@@ -62,20 +62,23 @@ class Mvertex : public TObject
       if (nRstructed >= 2) // at least 2 reconstructible (lvl 3)
       {
         vReal = 3;
+        return vReal;
       }
       else if (nFinalcharged >= 2) // at least 2 final charged (lvl 2)
       {
         vReal = 2;
+        return vReal;
       }
       else if (nCharged >= 2) // at least 2 charged (lvl 1)
       {
         vReal = 1;
+        return vReal;
       }
       else // just a vertex (lvl 0)
       {
         vReal = 0;
+        return vReal;
       }
-      return vReal;
     }
 
   void Addposition(double x, double y, double z)

@@ -2,7 +2,7 @@
 // This class has been automatically generated on
 // Mon Feb  1 23:01:28 2021 by ROOT version 6.22/06
 // from TTree tree/tree
-// found on file: B0toKsJPsi.root
+// found on file: continumcc-100k.root
 //////////////////////////////////////////////////////////
 
 #ifndef readgentree_h
@@ -193,10 +193,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("continumcc-100k.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("B0toKsJPsi.root");
+         f = new TFile("continumcc-100k.root");
       }
       f->GetObject("tree", tree);
    }
@@ -322,7 +322,8 @@ double readgentree::pTransverse(int id)
 
 double readgentree::prodAngle(int id)
 {
-   return atan(MCParticles_m_momentum_z[id] / pTransverse(id) ) * 180 / M_PI;
+   return acos(MCParticles_m_momentum_z[id]/sqrt(pow(MCParticles_m_momentum_x[id],2) + pow(MCParticles_m_momentum_y[id],2) + pow(MCParticles_m_momentum_z[id],2))) * 180 / M_PI;
 }
+
 
 #endif // #ifdef readgentree_cxx
