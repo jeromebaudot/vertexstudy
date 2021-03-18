@@ -4,7 +4,7 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("B0toKsJPsi-tree.root", "RECREATE");
+  outfile = new TFile("continumcc-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
@@ -195,7 +195,7 @@ void readgentree::daughterloop(int first, int last, int vId)
         vertexlist[vId].IsReal();
       }
 
-      cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
+      //cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
 
       //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
       //     << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
