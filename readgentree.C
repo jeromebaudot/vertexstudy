@@ -10,7 +10,7 @@ void readgentree::booking() //booking the tree and histograms
 
   avertex = new Mvertex();
   outtree->Branch("vertex", "Mvertex", &avertex);                                                                           // Create branch for vertex properties
-  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
+  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal1/I:e_nvtxreal2/I:e_nvtxreal3/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
 }
 
 //*****************************************************************
@@ -270,7 +270,9 @@ void readgentree::identifyVertex(int event_id)
   // Int_t           MCParticles_m_lastDaughter[kMaxMCParticles];   //[MCParticles_]
 
   vertexlist.resize(0); // Reinitialize vertex list vector in the event 
-  vtxreal = 0;          // Reinitialize no. of real vertices in the event
+  vtxreal1 = 0;          // Reinitialize no. of real vertices in the event
+  vtxreal2 = 0;          // Reinitialize no. of real vertices in the event
+  vtxreal3 = 0;          // Reinitialize no. of real vertices in the event
   Neutral = 0;          // Reinitialize no. of neutral particles in the event
   Charged = 0;          // Reinitialize no. of charged particles in the event
   Fcharged = 0;         // Reinitialize no. of final particles in the event
@@ -301,9 +303,17 @@ void readgentree::identifyVertex(int event_id)
   // Update counts for real vertices
   for (int i = 0; i < vertexlist.size(); i++)
   {
-    if (vertexlist[i].GetReal() == 3)
+    if (vertexlist[i].GetReal() >= 1) //level 1: at least 2 charged particles in the vertex
     {
-      vtxreal++;
+      vtxreal1++;
+    }
+    if (vertexlist[i].GetReal() >= 2)//level 2: at least 2 final charged particles in the vertex 
+    {
+      vtxreal2++;
+    }
+    if (vertexlist[i].GetReal() == 3)//level 3: at least 2 reconstructable particles in the vertex 
+    {
+      vtxreal3++;
     }
     Neutral += vertexlist[i].GetNneutral();
     Charged += vertexlist[i].GetNcharged();
@@ -314,7 +324,9 @@ void readgentree::identifyVertex(int event_id)
   // Update event counter branch
   counter.e_id = event_id;
   counter.e_nvtx = vertexlist.size();
-  counter.e_nvtxreal = vtxreal;
+  counter.e_nvtxreal1 = vtxreal1;
+  counter.e_nvtxreal2 = vtxreal2;
+  counter.e_nvtxreal3 = vtxreal3;
   counter.e_nNeutral = Neutral;
   counter.e_nCharged = Charged;
   counter.e_nFcharged = Fcharged;
@@ -331,10 +343,10 @@ void readgentree::identifyVertex(int event_id)
     avertex->Copy(vertexlist[i]); // Transfer vertex properties to a separate object for tree fill
     outtree->Fill();              // Fill all tree branches
   }
-  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal Event Vertices: " << vtxreal << endl;
+  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal Event Vertices: " << vtxreal3 << endl;
 
   totalvtx += vertexlist.size();
-  totalvtxreal += vtxreal;
+  totalvtxreal += vtxreal3;
   totalFcharged += Fcharged;
   totalRcharged += Rcharged;
 

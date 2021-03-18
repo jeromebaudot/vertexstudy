@@ -125,7 +125,9 @@ public:
    // Global variables needed for the analysis
    int nvertex;
    int nmothers;
-   int vtxreal;
+   int vtxreal1;
+   int vtxreal2;
+   int vtxreal3;
    int Neutral;
    int Charged;
    int Fcharged;
@@ -134,11 +136,11 @@ public:
    int totalvtxreal;
    int totalFcharged;
    int totalRcharged;
-   
+
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
-   //Tree, File and struc 
- 
+   //Tree, File and struc
+
    TTree *outtree;
    TFile *outfile;
    Mvertex *avertex;
@@ -146,12 +148,14 @@ public:
    {
       int e_id;        //id of the event
       int e_nvtx;      //Number of vertices in the event
-      int e_nvtxreal;  //Number of real vertices in the event
-      int e_nNeutral;  //Number of neutral particles in the event 
-      int e_nCharged;  //Number of charged particles in the event 
+      int e_nvtxreal1; //Number of vertices at level 1 in the event
+      int e_nvtxreal2; //Number of vertices at level 2  in the event
+      int e_nvtxreal3; //Number of vertices at level 3 in the event
+      int e_nNeutral;  //Number of neutral particles in the event
+      int e_nCharged;  //Number of charged particles in the event
       int e_nFcharged; //Number of final charged particles in the event
       int e_nRcharged; //Number of reconstructible charged particles in the event
-   }; 
+   };
 
    struct event counter;
 

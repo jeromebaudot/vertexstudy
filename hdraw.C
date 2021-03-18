@@ -25,9 +25,15 @@
     outt->Draw("event.e_nvtxreal>>h1", "id==0");
     c->Print("B0toKsJPsi-histos.pdf");
 
+    h1 = new TH1F("h1", "# Neutral particles/Event;# Final Charged", 20, 0, 20);
+    outt->Draw("event.e_nNeutral>>h1"); 
+    c->Print("B0toKsJPsi-histos.pdf");
 
+    h1 = new TH1F("h1", "# Charged particles/Event;# Final Charged", 20, 0, 20);
+    outt->Draw("event.e_nCharged>>h1");
+    c->Print("B0toKsJPsi-histos.pdf");
 
-    h1 = new TH1F("h1", "# Final Charged particles/Event;# Final Charged", 20, 0, 20);
+    h1 = new TH1F("h1", "# Final charged particles/Event;# Final Charged", 20, 0, 20);
     outt->Draw("event.e_nFcharged>>h1");
     c->Print("B0toKsJPsi-histos.pdf");
 
