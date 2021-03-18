@@ -185,7 +185,7 @@ void readgentree::daughterloop(int first, int last, int vId)
 
       // Check reconstructibility conditions
       // (No quarks as reconstructed particles)
-      if (pTransverse(d - 1) > 0.05 && prodAngle(d - 1) > 31 && prodAngle(d - 1) < 163 && abs(MCParticles_m_pdg[d - 1]) > 10)
+      if (pTransverse(d - 1) > 0.05 && prodAngle(d - 1) > 17 && prodAngle(d - 1) < 150 && abs(MCParticles_m_pdg[d - 1]) > 10)
       {
         vertexlist[vId].Addrstructed();
       }
