@@ -305,7 +305,7 @@ void readgentree::identifyVertex(int event_id)
   {
     if (vertexlist[i].GetReal() >= 1) //level 1: at least 2 charged particles in the vertex
     {
-      vtxreal1++;
+      vtxreal1++; 
     }
     if (vertexlist[i].GetReal() >= 2)//level 2: at least 2 final charged particles in the vertex 
     {

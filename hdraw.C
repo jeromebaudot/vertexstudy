@@ -19,8 +19,8 @@
     outt->Draw("event.e_nvtx>>h1", "id==0");
     c->Print("continumcc-100k-histos.pdf");
 
-    h1 = new TH1F("h1", "Nb of vertices with at least 2 charged particles/Event;Nb of Vertices", 10, 0, 10); //at least 2 charged particles
-    outt->Draw("event.e_nvtxreal1>>h1", "id==0");
+    h1 = new TH1F("h1", "Nb of vertices with at least 2 final charged particles/Event;Nb of Vertices", 10, 0, 10); //at least 2 final charged particles
+    outt->Draw("event.e_nvtxreal2>>h1", "id==0");
     c->Print("continumcc-100k-histos.pdf");
 
     h1 = new TH1F("h1", "Nb of vertices with at least 2 reconstructable particles/Event;Nb of Real Vertices", 10, 0, 10); //at least 2 reconstructable particles

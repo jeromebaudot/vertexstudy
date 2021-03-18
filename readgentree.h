@@ -322,7 +322,8 @@ double readgentree::pTransverse(int id)
 
 double readgentree::prodAngle(int id)
 {
-   return atan(pTransverse(id) / MCParticles_m_momentum_z[id]) * 180 / M_PI;
+   return acos(MCParticles_m_momentum_z[id]/sqrt(pow(MCParticles_m_momentum_x[id],2) + pow(MCParticles_m_momentum_y[id],2) + pow(MCParticles_m_momentum_z[id],2))) * 180 / M_PI;
 }
+
 
 #endif // #ifdef readgentree_cxx
