@@ -20,9 +20,12 @@
     outt->Draw( "event.e_nvtx>>h1", "id==0");
     c->Print("B0toKsJPsi-histos.pdf");
 
+
     h1 = new TH1F("h1", "# Real Vertices/Event;# Real Vertices", 10, 0, 10);
     outt->Draw("event.e_nvtxreal>>h1", "id==0");
     c->Print("B0toKsJPsi-histos.pdf");
+
+
 
     h1 = new TH1F("h1", "# Final Charged particles/Event;# Final Charged", 20, 0, 20);
     outt->Draw("event.e_nFcharged>>h1");

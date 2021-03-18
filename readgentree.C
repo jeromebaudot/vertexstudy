@@ -9,8 +9,8 @@ void readgentree::booking() //booking the tree and histograms
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
   avertex = new Mvertex();
-  outtree->Branch("vertex", "Mvertex", &avertex); // Create branch for vertex properties
-  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal/I:e_nCharged/I:e_nNeutral/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
+  outtree->Branch("vertex", "Mvertex", &avertex);                                                                           // Create branch for vertex properties
+  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
 }
 
 //*****************************************************************
@@ -176,7 +176,7 @@ void readgentree::daughterloop(int first, int last, int vId)
     if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 1) // final charged particle
     {
       vertexlist[vId].Addcharged();
-      
+
       // (No quarks as final charged particles)
       if (abs(MCParticles_m_pdg[d - 1]) > 10)
       {
@@ -190,7 +190,7 @@ void readgentree::daughterloop(int first, int last, int vId)
         vertexlist[vId].Addrstructed();
       }
 
-      if (vertexlist[vId].GetReal()<3)
+      if (vertexlist[vId].GetReal() < 3)
       {
         vertexlist[vId].IsReal();
       }
@@ -218,8 +218,8 @@ void readgentree::daughterloop(int first, int last, int vId)
       if (particlecharge(MCParticles_m_pdg[d - 1]) == 1)
       {
         vertexlist[vId].Addcharged(); //To be checked, do we account for intermediate vertices? No
-        
-        if (vertexlist[vId].GetReal()<1) 
+
+        if (vertexlist[vId].GetReal() < 1)
         {
           vertexlist[vId].IsReal();
         }
@@ -269,14 +269,14 @@ void readgentree::identifyVertex(int event_id)
   // Int_t           MCParticles_m_firstDaughter[kMaxMCParticles];   //[MCParticles_]
   // Int_t           MCParticles_m_lastDaughter[kMaxMCParticles];   //[MCParticles_]
 
-  vertexlist.resize(0); // Reinitialize vertex list vector
-  vtxreal = 0;          // Reinitialize no. of real vertices
-  Charged = 0;
-  Neutral = 0;
-  Fcharged = 0;
-  Rcharged = 0;
+  vertexlist.resize(0); // Reinitialize vertex list vector in the event 
+  vtxreal = 0;          // Reinitialize no. of real vertices in the event
+  Neutral = 0;          // Reinitialize no. of neutral particles in the event
+  Charged = 0;          // Reinitialize no. of charged particles in the event
+  Fcharged = 0;         // Reinitialize no. of final particles in the event
+  Rcharged = 0;         // Reinitialize no. of reconstructable particles in the event
 
-  double skip = 0;
+  double skip = 0;      // Reinitialize no. of skipped particles in the event, here just to check
   for (int i = 0; i < MCParticles_; i++)
   {
     if (ndaughters(i) != 0 && MCParticles_m_mother[i] == 0)
@@ -301,11 +301,11 @@ void readgentree::identifyVertex(int event_id)
   // Update counts for real vertices
   for (int i = 0; i < vertexlist.size(); i++)
   {
-    if (vertexlist[i].GetReal()==3)
+    if (vertexlist[i].GetReal() == 3)
     {
       vtxreal++;
     }
-    Neutral  += vertexlist[i].GetNneutral();
+    Neutral += vertexlist[i].GetNneutral();
     Charged += vertexlist[i].GetNcharged();
     Fcharged += vertexlist[i].GetNFinalcharged();
     Rcharged += vertexlist[i].GetNrstructed();
@@ -315,8 +315,8 @@ void readgentree::identifyVertex(int event_id)
   counter.e_id = event_id;
   counter.e_nvtx = vertexlist.size();
   counter.e_nvtxreal = vtxreal;
-  counter.e_nCharged = Charged;
   counter.e_nNeutral = Neutral;
+  counter.e_nCharged = Charged;
   counter.e_nFcharged = Fcharged;
   counter.e_nRcharged = Rcharged;
 
