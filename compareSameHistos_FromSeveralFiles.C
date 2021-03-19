@@ -20,7 +20,7 @@ void compareSameHistos_FromSeveralFiles(){
   //
 
 
-  Int_t nFiles = 4;
+  Int_t nFiles = 3;
   const Int_t maxFiles = 30;
 
   Bool_t scaleHisto = kFALSE;
@@ -32,24 +32,23 @@ void compareSameHistos_FromSeveralFiles(){
   gStyle->SetOptFit(0);
 
   Char_t fileNames[maxFiles][100] ={
-    "run26634Pl3_ClCharge.root",
-    "run26633Pl3_ClCharge.root",
-    "run26632Pl3_ClCharge.root",
-    "run26631Pl3_ClCharge.root"
+    "B0toKsJPsi-100k-tree.root",
+    "mixedB-100k-tree.root",
+    "continumcc-100k-tree.root"
   };
   Char_t legendText[maxFiles][50] ={
-    "5xnoise",
-    "6xnoise",
-    "8xnoise",
-    "10xnoise"
+    "B0toKsJPsi",
+    "continuumcc",
+    "mixedB"
+    //"10xnoise"
   };
 
-  Char_t dirName[400] = "/Users/jeromeb/Documents/techdoc/cmos/M26/tBeam_june2010";
+  Char_t dirName[400] = "/Users/oponcet/Documents/University/MASTER/S2/BELLE_II/code/vertexstudy";
 
-  Char_t histoName[20] = "npix_c";
-  Char_t histoTitle[300] = "Pixel multiplicity for MIMOSA-26, epi HR 15 #mum, after 300 kRad";
-  Char_t histoXTitle[100] = "# pixels";
-  Char_t legendTitle[50] = "Threshold:";
+  Char_t histoName[20] = "id";
+  Char_t histoTitle[300] = "id/Event;id";
+  Char_t histoXTitle[100] = "id";
+  Char_t legendTitle[50] = "";
 
   Short_t colors[maxFiles] = { 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26};
   Short_t styles[maxFiles] = { 1};
@@ -80,7 +79,7 @@ void compareSameHistos_FromSeveralFiles(){
       histos[ifile]->SetLineColor(1);
     }
     histos[ifile]->SetLineStyle(styles[ifile]);
-    histos[ifile]->SetLineWidth(4.5);
+    histos[ifile]->SetLineWidth(4);
     histos[ifile]->SetFillColor(colors[ifile]);
     if( filledHisto ) {
       histos[ifile]->SetFillStyle(3005);
