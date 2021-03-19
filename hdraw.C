@@ -7,17 +7,21 @@
     // Display all histo one by one on the same canvas
     // Print them on an output file in PDF format
 
-    TFile f("continumcc-100k-tree.root");
+    TFile f("../tree root files/continumcc-100k-tree.root");
+    TTree *outt = (TTree*)f.Get("outt");
     TH1F *h1;
     TH2F *h2;
+
+    TFile *outfile = new TFile("continumcc-histo.root", "RECREATE");
 
     TCanvas *c = new TCanvas("c", "vertex study", 25, 25, 800, 800);
     c->Print("continumcc-100k-histos.pdf[");
 
     //By events
-    h1 = new TH1F("h1", "Nb of Vertices/Event;Nb of Vertices", 10, 0, 10); //all vertices
-    outt->Draw("event.e_nvtx>>h1", "id==0");
+    TH1F *hnvtxevent = new TH1F("hnvtxevent", "Nb of Vertices/Event;Nb of Vertices", 10, 0, 10); //all vertices
+    outt->Draw("event.e_nvtx>>hnvtxevent", "id==0");
     c->Print("continumcc-100k-histos.pdf");
+    outfile->Write("hnvtxevent");
 
     h1 = new TH1F("h1", "Nb of vertices with at least 2 final charged particles/Event;Nb of Vertices", 10, 0, 10); //at least 2 final charged particles
     outt->Draw("event.e_nvtxreal2>>h1", "id==0");
@@ -124,4 +128,5 @@
     c->Print("continumcc-100k-histos.pdf]");
 
     f.Close();
+    outfile->Close();
 }
