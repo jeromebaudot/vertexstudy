@@ -27,9 +27,10 @@
     outt->Draw("event.e_nvtxreal2>>h1", "id==0");
     c->Print("continumcc-100k-histos.pdf");
 
-    h1 = new TH1F("h1", "Nb of vertices with at least 2 reconstructable particles/Event;Nb of Real Vertices", 10, 0, 10); //at least 2 reconstructable particles
-    outt->Draw("event.e_nvtxreal3>>h1", "id==0");
+    TH1F *hnvtxreal3 = new TH1F("hnvtxreal3", "Nb of vertices with at least 2 reconstructable particles/Event;Nb of Real Vertices", 10, 0, 10); //at least 2 reconstructable particles
+    outt->Draw("event.e_nvtxreal3>>hnvtxreal3", "id==0");
     c->Print("continumcc-100k-histos.pdf");
+    outfile->Write("hnvtxreal3");
 
     h1 = new TH1F("h1", "Nb of neutral particles/Event;Nb of neutral", 20, 0, 20); //Neutral
     outt->Draw("event.e_nNeutral>>h1");
@@ -125,7 +126,19 @@
     c->SetLogy();
     c->Print("continumcc-100k-histos.pdf");
 
+    hnvtxevent->Draw();
+    hnvtxreal3->SetLineColor(kRed);
+    hnvtxreal3->Draw("same");
+    c->Print("continumcc-100k-histos.pdf");
+
     c->Print("continumcc-100k-histos.pdf]");
+
+    TCanvas *c1 = new TCanvas("c1", "Superposition", 50, 50, 800, 800);
+    hnvtxevent->Draw();
+    hnvtxreal3->SetLineColor(kRed);
+    hnvtxreal3->Draw("same");
+    c1->Update();
+    c1->Write();
 
     f.Close();
     outfile->Close();
