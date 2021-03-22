@@ -7,10 +7,12 @@
     // Display all histo one by one on the same canvas
     // Print them on an output file in PDF format
 
-    TFile f("continumcc-100k-tree.root");
+    TFile f("../tree root files/continumcc-100k-tree.root");
+    TTree *outt = (TTree*)f.Get("outt");
     TH1F *h1;
     TH2F *h2;
 
+<<<<<<< HEAD
     TCanvas *c1 = new TCanvas("c1", "Superposition", 80, 80, 900, 900);
     c1->Print("continumcc-100k-histos.pdf[");
 
@@ -111,6 +113,39 @@
 
 
     //**************************//
+=======
+    TFile *outfile = new TFile("continumcc-histo.root", "RECREATE");
+
+    TCanvas *c = new TCanvas("c", "vertex study", 25, 25, 800, 800);
+    c->Print("continumcc-100k-histos.pdf[");
+
+    //By events
+    TH1F *hnvtxevent = new TH1F("hnvtxevent", "Nb of Vertices/Event;Nb of Vertices", 10, 0, 10); //all vertices
+    outt->Draw("event.e_nvtx>>hnvtxevent", "id==0");
+    c->Print("continumcc-100k-histos.pdf");
+    outfile->Write("hnvtxevent");
+
+    h1 = new TH1F("h1", "Nb of vertices with at least 2 final charged particles/Event;Nb of Vertices", 10, 0, 10); //at least 2 final charged particles
+    outt->Draw("event.e_nvtxreal2>>h1", "id==0");
+    c->Print("continumcc-100k-histos.pdf");
+
+    TH1F *hnvtxreal3 = new TH1F("hnvtxreal3", "Nb of vertices with at least 2 reconstructable particles/Event;Nb of Real Vertices", 10, 0, 10); //at least 2 reconstructable particles
+    outt->Draw("event.e_nvtxreal3>>hnvtxreal3", "id==0");
+    c->Print("continumcc-100k-histos.pdf");
+    outfile->Write("hnvtxreal3");
+
+    h1 = new TH1F("h1", "Nb of neutral particles/Event;Nb of neutral", 20, 0, 20); //Neutral
+    outt->Draw("event.e_nNeutral>>h1");
+    c->Print("continumcc-100k-histos.pdf");
+
+    h1 = new TH1F("h1", "Nb of charged particles/Event;Nb of Charged", 20, 0, 20); //Charged
+    outt->Draw("event.e_nCharged>>h1");
+    c->Print("continumcc-100k-histos.pdf");
+
+    h1 = new TH1F("h1", "Nb of final charged particles/Event;Nb of final charged", 20, 0, 20); //Final charged
+    outt->Draw("event.e_nFcharged>>h1");
+    c->Print("continumcc-100k-histos.pdf");
+>>>>>>> 3e59f7c6734a755479938a9f57ee5215bda18722
 
     h1 = new TH1F("h1", "Nb of recontructible charged particles/Event;Nb of final charged", 20, 0, 20); //Reconstrutable
     outt->Draw("event.e_nRcharged>>h1");
@@ -189,9 +224,30 @@
     //Radial position
     h1 = new TH1F("h1", "Radial position of real vertices; distance [cm]", 200, 0, 4);
     outt->Draw("radialpos>>h1", "vReal==3 && radialpos<1.2 ");
+<<<<<<< HEAD
     c1->SetLogy();
     c1->Print("continumcc-100k-histos.pdf");
 
     c1->Print("continumcc-100k-histos.pdf]");
+=======
+    c->SetLogy();
+    c->Print("continumcc-100k-histos.pdf");
+
+    hnvtxevent->Draw();
+    hnvtxreal3->SetLineColor(kRed);
+    hnvtxreal3->Draw("same");
+    c->Print("continumcc-100k-histos.pdf");
+
+    c->Print("continumcc-100k-histos.pdf]");
+
+    TCanvas *c1 = new TCanvas("c1", "Superposition", 50, 50, 800, 800);
+    hnvtxevent->Draw();
+    hnvtxreal3->SetLineColor(kRed);
+    hnvtxreal3->Draw("same");
+    c1->Update();
+    c1->Write();
+
+>>>>>>> 3e59f7c6734a755479938a9f57ee5215bda18722
     f.Close();
+    outfile->Close();
 }
