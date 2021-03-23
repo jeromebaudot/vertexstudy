@@ -212,6 +212,7 @@ void readgentree::daughterloop(int first, int last, int vId)
 
     else if (decaytime(d - 1) == 0 && ndaughters(d - 1) != 0) // resonance
     {
+      // Recursive method for resonance
       daughterloop(MCParticles_m_firstDaughter[d - 1], MCParticles_m_lastDaughter[d - 1], vId);
       //cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
     }
@@ -279,7 +280,7 @@ void readgentree::identifyVertex(int event_id)
   Neutral = 0;          // Reinitialize no. of neutral particles in the event
   Charged = 0;          // Reinitialize no. of charged particles in the event
   Fcharged = 0;         // Reinitialize no. of final particles in the event
-  Rcharged = 0;         // Reinitialize no. of reconstructable particles in the event
+  Rcharged = 0;         // Reinitialize no. of reconstructible particles in the event
 
   double skip = 0; // Reinitialize no. of skipped particles in the event, here just to check
   for (int i = 0; i < MCParticles_; i++)
@@ -314,7 +315,7 @@ void readgentree::identifyVertex(int event_id)
     {
       vtxreal2++;
     }
-    if (vertexlist[i].GetReal() == 3) //level 3: at least 2 reconstructable particles in the vertex
+    if (vertexlist[i].GetReal() == 3)//level 3: at least 2 reconstructible particles in the vertex 
     {
       vtxreal3++;
     }
