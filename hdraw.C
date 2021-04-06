@@ -9,8 +9,6 @@
 
     TFile f("continumcc-100k-tree.root");
     TTree *outt = (TTree *)f.Get("outt");
-    TH1F *h1;
-    TH2F *h2;
 
     TCanvas *c1 = new TCanvas("c1", "Histograms", 80, 80, 900, 900);
     c1->Print("continumcc-100k-histos.pdf[");
@@ -201,24 +199,24 @@
     //2D histograms by vertex
     TH2F *h2_neut_vs_char = new TH2F("h2_neut_vs_char", "Nb of Neutral vs. Nb of Charged;Nb of Charged;Nb of Neutral", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nNeutral:nCharged>>h2_neut_vs_char");
-    h2->Draw("colz");
+    h2_neut_vs_char->Draw("colz");
     c1->SetLogy(0);
     c1->SetLogx(0);
     c1->Print("continumcc-100k-histos.pdf");
 
     TH2F *h2_fchar_vs_char = new TH2F("h2_fchar_vs_char", "Nb of Final charged vs. Nb of Charged;Nb of Charged;Nb of Final charged", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nFinalcharged:nCharged>>h2_fchar_vs_char");
-    h2->Draw("colz");
+    h2_fchar_vs_char->Draw("colz");
     c1->Print("continumcc-100k-histos.pdf");
 
     TH2F *h2_rchar_vs_char = new TH2F("h2_rchar_vs_char", "Nb of Reconstructible vs. Nb of Charged;Nb of Charged;Nb of Reconstructible", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nRstructed:nCharged>>h2_rchar_vs_char");
-    h2->Draw("colz");
+    h2_rchar_vs_char->Draw("colz");
     c1->Print("continumcc-100k-histos.pdf");
 
     TH2F *h2_rchar_vs_fchar = new TH2F("h2_rchar_vs_fchar", "Nb of Reconstructible vs. Nb of Final charged; Nb of Final charged;Nb of Reconstructible", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nRstructed:nFinalcharged>>h2_rchar_vs_fchar");
-    h2->Draw("colz");
+    h2_rchar_vs_fchar->Draw("colz");
     c1->Print("continumcc-100k-histos.pdf");
 
     TH2F *h2_pdg_rad = new TH2F("h2_pdg_rad", "PDG ID vs. Radial distance;Distance [cm];PDG ID", 200, 0, 10, 10000, 0, 10000); 
@@ -272,9 +270,10 @@
 
     TH1F *h1_rad_r = new TH1F("h1_rad_r", "Radial position of vertices; distance [cm]", 200, 0, 2);
     outt->Draw("radialpos>>h1_rad_r", "vReal==3");
-    hcumul = h1_rad_r->GetCumulative();
+    TH1F *hcumul = (TH1F *)h1_rad_r->GetCumulative();
     hcumul->Scale(1/(h1_rad_r->GetEntries()));
-    hcumul->Draw("LF2");
+    hcumul->SetStats(0);
+    hcumul->Draw();
     c1->SetGrid();
     c1->SetLogy(0);
     c1->Update();
