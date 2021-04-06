@@ -8,7 +8,11 @@
     // Print them on an output file in PDF format
 
     TFile f("continumcc-100k-tree.root");
+<<<<<<< HEAD
     
+=======
+    TTree *outt = (TTree *)f.Get("outt");
+>>>>>>> 7ff8f28e21557f8005ea42833fe71279b97adb3b
 
     TCanvas *c1 = new TCanvas("c1", "Histograms", 80, 80, 900, 900);
     c1->Print("continumcc-100k-histos.pdf[");
@@ -270,9 +274,10 @@
 
     TH1F *h1_rad_r = new TH1F("h1_rad_r", "Radial position of vertices; distance [cm]", 200, 0, 2);
     outt->Draw("radialpos>>h1_rad_r", "vReal==3");
-    hcumul = h1_rad_r->GetCumulative();
+    TH1F *hcumul = (TH1F *)h1_rad_r->GetCumulative();
     hcumul->Scale(1/(h1_rad_r->GetEntries()));
-    hcumul->Draw("LF2");
+    hcumul->SetStats(0);
+    hcumul->Draw();
     c1->SetGrid();
     c1->SetLogy(0);
     c1->Update();
