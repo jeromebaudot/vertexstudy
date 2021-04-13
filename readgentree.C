@@ -4,13 +4,13 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("tautau-100k-tree.root", "RECREATE");
+  outfile = new TFile("B0toKsJPsi-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
   avertex = new Mvertex();
-  outtree->Branch("vertex", "Mvertex", &avertex);                                                                           // Create branch for vertex properties
-  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal1/I:e_nvtxreal2/I:e_nvtxreal3/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
+  outtree->Branch("vertex", "Mvertex", &avertex);                                                                                                                                      // Create branch for vertex properties
+  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal1/I:e_nvtxreal2/I:e_nvtxreal3/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nF2charged/I:e_nRcharged/I:e_nR2charged/I"); // Create branch for event counter
 }
 
 //*****************************************************************
@@ -109,61 +109,61 @@ int readgentree::particlecharge(int pdg) // This function is not used to calcula
 
   switch (length)
   {
-    case 4: // sees only protons, neutrons and light baryons for now...
-    {
-      int sum = (abs(pdg) / 1000 % 10) + (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
+  case 4: // sees only protons, neutrons and light baryons for now...
+  {
+    int sum = (abs(pdg) / 1000 % 10) + (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
 
-      if ((sum % 2) == 0)
-      {
-        return 0; // 0 is neutral
-      }
-      else
-      {
-        return 1; // 1 is charged
-      }
-    }
-    break;
-    case 3: // mesons
+    if ((sum % 2) == 0)
     {
-      int sum = (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
+      return 0; // 0 is neutral
+    }
+    else
+    {
+      return 1; // 1 is charged
+    }
+  }
+  break;
+  case 3: // mesons
+  {
+    int sum = (abs(pdg) / 100 % 10) + (abs(pdg) / 10 % 10);
 
-      if ((sum % 2) == 0)
-      {
-        return 0;
-      }
-      else
-      {
-        return 1;
-      }
-    }
-    break;
-    case 2: // leptons or gauge bosons
+    if ((sum % 2) == 0)
     {
-      if (abs(pdg) == 21 || abs(pdg) == 23) // gluon or Z boson cases
-      {
-        return 0;
-      }
-      else if ((abs(pdg) % 2) == 0)
-      {
-        return 0;
-      }
-      else
-      {
-        return 1;
-      }
+      return 0;
     }
-    break;
-    case 1: // quarks
+    else
     {
       return 1;
     }
-    break;
-    default:
+  }
+  break;
+  case 2: // leptons or gauge bosons
+  {
+    if (abs(pdg) == 21 || abs(pdg) == 23) // gluon or Z boson cases
     {
-      cout << "Error: pdg code " << pdg << " not accounted for."
-         << ", Length: " << length << endl;
-      return pdg;
+      return 0;
     }
+    else if ((abs(pdg) % 2) == 0)
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+  break;
+  case 1: // quarks
+  {
+    return 1;
+  }
+  break;
+  default:
+  {
+    cout << "Error: pdg code " << pdg << " not accounted for."
+         << ", Length: " << length << endl;
+    return pdg;
+  }
   }
 }
 
@@ -273,16 +273,18 @@ void readgentree::identifyVertex(int event_id)
   // Int_t           MCParticles_m_firstDaughter[kMaxMCParticles];   //[MCParticles_]
   // Int_t           MCParticles_m_lastDaughter[kMaxMCParticles];   //[MCParticles_]
 
-  vertexlist.resize(0); // Reinitialize vertex list vector in the event 
-  vtxreal1 = 0;          // Reinitialize no. of real vertices in the event
-  vtxreal2 = 0;          // Reinitialize no. of real vertices in the event
-  vtxreal3 = 0;          // Reinitialize no. of real vertices in the event
+  vertexlist.resize(0); // Reinitialize vertex list vector in the event
+  vtxreal1 = 0;         // Reinitialize no. of real vertices in the event
+  vtxreal2 = 0;         // Reinitialize no. of real vertices in the event
+  vtxreal3 = 0;         // Reinitialize no. of real vertices in the event
   Neutral = 0;          // Reinitialize no. of neutral particles in the event
   Charged = 0;          // Reinitialize no. of charged particles in the event
-  Fcharged = 0;         // Reinitialize no. of final particles in the event
-  Rcharged = 0;         // Reinitialize no. of reconstructible particles in the event
+  Fcharged = 0;
+  F2charged = 0; // Reinitialize no. of final particles in the event
+  Rcharged = 0;  // Reinitialize no. of reconstructible particles in the event
+  R2charged = 0;
 
-  double skip = 0;      // Reinitialize no. of skipped particles in the event, here just to check
+  double skip = 0; // Reinitialize no. of skipped particles in the event, here just to check
   for (int i = 0; i < MCParticles_; i++)
   {
     if (ndaughters(i) != 0 && MCParticles_m_mother[i] == 0)
@@ -309,20 +311,30 @@ void readgentree::identifyVertex(int event_id)
   {
     if (vertexlist[i].GetReal() >= 1) //level 1: at least 2 charged particles in the vertex
     {
-      vtxreal1++; 
+      vtxreal1++;
     }
-    if (vertexlist[i].GetReal() >= 2)//level 2: at least 2 final charged particles in the vertex 
+    if (vertexlist[i].GetReal() >= 2) //level 2: at least 2 final charged particles in the vertex
     {
       vtxreal2++;
     }
-    if (vertexlist[i].GetReal() == 3)//level 3: at least 2 reconstructible particles in the vertex 
+    if (vertexlist[i].GetReal() == 3) //level 3: at least 2 reconstructible particles in the vertex
     {
       vtxreal3++;
     }
     Neutral += vertexlist[i].GetNneutral();
     Charged += vertexlist[i].GetNcharged();
     Fcharged += vertexlist[i].GetNFinalcharged();
+    if (vertexlist[i].GetReal() >= 2)
+    {
+      F2charged += vertexlist[i].GetNFinalcharged();
+      //cout << "F2charged= " << F2charged << endl;
+    }
     Rcharged += vertexlist[i].GetNrstructed();
+    if (vertexlist[i].GetReal() == 3)
+    {
+      R2charged += vertexlist[i].GetNrstructed();
+      //cout << "R2charged= " << R2charged << endl;
+    }
   }
 
   // Update event counter branch
@@ -334,11 +346,14 @@ void readgentree::identifyVertex(int event_id)
   counter.e_nNeutral = Neutral;
   counter.e_nCharged = Charged;
   counter.e_nFcharged = Fcharged;
+  counter.e_nF2charged = F2charged;
   counter.e_nRcharged = Rcharged;
+  counter.e_nR2charged = R2charged;
 
   // Loop over vertices to fill tree and print
   for (int i = 0; i < vertexlist.size(); i++)
   {
+
     cout << "->Vertex id: " << vertexlist[i].GetId() << ", nCharged: " << vertexlist[i].GetNcharged() << ", nNeutral: "
          << vertexlist[i].GetNneutral() << ", nReconstructed = " << vertexlist[i].GetNrstructed()
          << ", nFinalcharged = " << vertexlist[i].GetNFinalcharged() << ", Real = " << vertexlist[i].GetReal() << ", PDGcode = " << vertexlist[i].GetvPdg() << ", Radial position: "
