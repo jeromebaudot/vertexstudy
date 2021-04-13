@@ -4,13 +4,13 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("continumcc-100k-tree.root", "RECREATE");
+  outfile = new TFile("B0toKsJPsi-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
   avertex = new Mvertex();
-  outtree->Branch("vertex", "Mvertex", &avertex);                                                                                                        // Create branch for vertex properties
-  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal1/I:e_nvtxreal2/I:e_nvtxreal3/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nRcharged/I"); // Create branch for event counter
+  outtree->Branch("vertex", "Mvertex", &avertex);                                                                                                                                      // Create branch for vertex properties
+  outtree->Branch("event", &counter, "e_id/I:e_nvtx/I:e_nvtxreal1/I:e_nvtxreal2/I:e_nvtxreal3/I:e_nNeutral/I:e_nCharged/I:e_nFcharged/I:e_nF2charged/I:e_nRcharged/I:e_nR2charged/I"); // Create branch for event counter
 }
 
 //*****************************************************************
@@ -279,8 +279,10 @@ void readgentree::identifyVertex(int event_id)
   vtxreal3 = 0;         // Reinitialize no. of real vertices in the event
   Neutral = 0;          // Reinitialize no. of neutral particles in the event
   Charged = 0;          // Reinitialize no. of charged particles in the event
-  Fcharged = 0;         // Reinitialize no. of final particles in the event
-  Rcharged = 0;         // Reinitialize no. of reconstructible particles in the event
+  Fcharged = 0;
+  F2charged = 0; // Reinitialize no. of final particles in the event
+  Rcharged = 0;  // Reinitialize no. of reconstructible particles in the event
+  R2charged = 0;
 
   double skip = 0; // Reinitialize no. of skipped particles in the event, here just to check
   for (int i = 0; i < MCParticles_; i++)
@@ -315,14 +317,24 @@ void readgentree::identifyVertex(int event_id)
     {
       vtxreal2++;
     }
-    if (vertexlist[i].GetReal() == 3)//level 3: at least 2 reconstructible particles in the vertex 
+    if (vertexlist[i].GetReal() == 3) //level 3: at least 2 reconstructible particles in the vertex
     {
       vtxreal3++;
     }
     Neutral += vertexlist[i].GetNneutral();
     Charged += vertexlist[i].GetNcharged();
     Fcharged += vertexlist[i].GetNFinalcharged();
+    if (vertexlist[i].GetReal() >= 2)
+    {
+      F2charged += vertexlist[i].GetNFinalcharged();
+      cout << "F2charged= " << F2charged << endl;
+    }
     Rcharged += vertexlist[i].GetNrstructed();
+    if (vertexlist[i].GetReal() == 3)
+    {
+      R2charged += vertexlist[i].GetNrstructed();
+      cout << "R2charged= " << R2charged << endl;
+    }
   }
 
   // Update event counter branch
@@ -334,7 +346,9 @@ void readgentree::identifyVertex(int event_id)
   counter.e_nNeutral = Neutral;
   counter.e_nCharged = Charged;
   counter.e_nFcharged = Fcharged;
+  counter.e_nF2charged = F2charged;
   counter.e_nRcharged = Rcharged;
+  counter.e_nR2charged = R2charged;
 
   // Loop over vertices to fill tree and print
   for (int i = 0; i < vertexlist.size(); i++)

@@ -2,7 +2,7 @@
 // This class has been automatically generated on
 // Mon Feb  1 23:01:28 2021 by ROOT version 6.22/06
 // from TTree tree/tree
-// found on file: continumcc-100k.root
+// found on file: B0toKsJPsi-100k.root
 //////////////////////////////////////////////////////////
 
 #ifndef readgentree_h
@@ -131,7 +131,9 @@ public:
    int Neutral;
    int Charged;
    int Fcharged;
+   int F2charged;
    int Rcharged;
+   int R2charged;
    int totalvtx;
    int totalvtxreal;
    int totalFcharged;
@@ -146,15 +148,17 @@ public:
    Mvertex *avertex;
    struct event
    {
-      int e_id;        //id of the event
-      int e_nvtx;      //Number of vertices in the event
-      int e_nvtxreal1; //Number of vertices at level 1 in the event
-      int e_nvtxreal2; //Number of vertices at level 2  in the event
-      int e_nvtxreal3; //Number of vertices at level 3 in the event
-      int e_nNeutral;  //Number of neutral particles in the event
-      int e_nCharged;  //Number of charged particles in the event
-      int e_nFcharged; //Number of final charged particles in the event
-      int e_nRcharged; //Number of reconstructible charged particles in the event
+      int e_id;         //id of the event
+      int e_nvtx;       //Number of vertices in the event
+      int e_nvtxreal1;  //Number of vertices at level 1 in the event
+      int e_nvtxreal2;  //Number of vertices at level 2  in the event
+      int e_nvtxreal3;  //Number of vertices at level 3 in the event
+      int e_nNeutral;   //Number of neutral particles in the event
+      int e_nCharged;   //Number of charged particles in the event
+      int e_nFcharged;  //Number of final charged particles in the event
+      int e_nF2charged; //Number of final charged particles in the event belong vertex w at least 2 final charged
+      int e_nRcharged;  //Number of reconstructible charged particles in the event
+      int e_nR2charged;  //Number of reconstructible charged particles in the event belong vertex w at least 2 reconstructable charged
    };
 
    struct event counter;
@@ -193,10 +197,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("continumcc-100k.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("B0toKsJPsi-100k.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("continumcc-100k.root");
+         f = new TFile("B0toKsJPsi-100k.root");
       }
       f->GetObject("tree", tree);
    }
@@ -322,8 +326,7 @@ double readgentree::pTransverse(int id)
 
 double readgentree::prodAngle(int id)
 {
-   return acos(MCParticles_m_momentum_z[id]/sqrt(pow(MCParticles_m_momentum_x[id],2) + pow(MCParticles_m_momentum_y[id],2) + pow(MCParticles_m_momentum_z[id],2))) * 180 / M_PI;
+   return acos(MCParticles_m_momentum_z[id] / sqrt(pow(MCParticles_m_momentum_x[id], 2) + pow(MCParticles_m_momentum_y[id], 2) + pow(MCParticles_m_momentum_z[id], 2))) * 180 / M_PI;
 }
-
 
 #endif // #ifdef readgentree_cxx
