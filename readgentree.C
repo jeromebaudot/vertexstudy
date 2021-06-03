@@ -4,7 +4,7 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("B0toKsJPsi-100k-tree.root", "RECREATE");
+  outfile = new TFile("./data/B0toKsJPsi-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
@@ -200,21 +200,21 @@ void readgentree::daughterloop(int first, int last, int vId)
 
       //cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
 
-      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
-      //     << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
+      cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
+           << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
     }
 
     else if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 0) // final neutral particle
     {
       vertexlist[vId].Addneutral();
-      //cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
+      cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
     }
 
     else if (decaytime(d - 1) == 0 && ndaughters(d - 1) != 0) // resonance
     {
       // Recursive method for resonance
       daughterloop(MCParticles_m_firstDaughter[d - 1], MCParticles_m_lastDaughter[d - 1], vId);
-      //cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
+      cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
     }
 
     else if (decaytime(d - 1) != 0 && ndaughters(d - 1) != 0) // vertex (real or not)
@@ -279,10 +279,10 @@ void readgentree::identifyVertex(int event_id)
   vtxreal3 = 0;         // Reinitialize no. of real vertices in the event
   Neutral = 0;          // Reinitialize no. of neutral particles in the event
   Charged = 0;          // Reinitialize no. of charged particles in the event
-  Fcharged = 0;
-  F2charged = 0; // Reinitialize no. of final particles in the event
-  Rcharged = 0;  // Reinitialize no. of reconstructible particles in the event
-  R2charged = 0;
+  Fcharged = 0;         // Reinitialize no. of final particles in the event
+  F2charged = 0;        // Reinitialize no. of final tracks belonging to >lvl2 vertices in the event
+  Rcharged = 0;         // Reinitialize no. of reconstructible particles in the event
+  R2charged = 0;        // Reinitialize no. of reconstructible tracks belonging to lvl3 vertices in the event
 
   double skip = 0; // Reinitialize no. of skipped particles in the event, here just to check
   for (int i = 0; i < MCParticles_; i++)
@@ -362,13 +362,13 @@ void readgentree::identifyVertex(int event_id)
     avertex->Copy(vertexlist[i]); // Transfer vertex properties to a separate object for tree fill
     outtree->Fill();              // Fill all tree branches
   }
-  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal Event Vertices: " << vtxreal3 << endl;
+  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal (lvl3) Event Vertices: " << vtxreal3 << endl;
 
   totalvtx += vertexlist.size();
   totalvtxreal += vtxreal3;
   totalFcharged += Fcharged;
   totalRcharged += Rcharged;
 
-  cout << "\n# Vertices Total: " << totalvtx << "\n# Real Vertices Total: " << totalvtxreal << endl;
+  cout << "\n# Vertices Total: " << totalvtx << "\n# Real (lvl3) Vertices Total: " << totalvtxreal << endl;
   cout << "\n# Final Charged Particles Total: " << totalFcharged << "\n# Reconstructible Particles Total: " << totalRcharged << endl;
 }
