@@ -15,20 +15,20 @@
 
     //By events
 
-    TH1F *h1_nvtx = new TH1F("h1_nvtx", "Number of Vertices by event;Number of Vertices", 14, 0, 14); //all vertices
+    TH1F *h1_nvtx = new TH1F("h1_nvtx", "Number of Vertices by event;Number of Vertices", 16, 0, 16); //all vertices
     outt->Draw("event.e_nvtx>>h1_nvtx", "id==0");
 
-    TH1F *h1_nvtxreal2 = new TH1F("h1_nvtxreal2", "Number of Vertices by event;Number of Vertices", 14, 0, 14); //at least 2 final charged particles
+    TH1F *h1_nvtxreal2 = new TH1F("h1_nvtxreal2", "Number of Vertices by event;Number of Vertices", 12, 0, 12); //at least 2 final charged particles
     outt->Draw("event.e_nvtxreal2>>h1_nvtxreal2", "id==0");
 
-    TH1F *h1_nvtxreal3 = new TH1F("h1_nvtxreal3", "Number of Vertices by event;Number of Vertices", 14, 0, 14); //at least 2 reconstructible particles
+    TH1F *h1_nvtxreal3 = new TH1F("h1_nvtxreal3", "Number of Vertices by event;Number of Vertices", 12, 0, 12); //at least 2 reconstructible particles
     outt->Draw("event.e_nvtxreal3>>h1_nvtxreal3", "id==0");
 
-    h1_nvtx->SetMaximum(50000);
+    h1_nvtx->SetMaximum(45000);
     h1_nvtx->SetLineColor(860);
     h1_nvtx->SetFillColorAlpha(860, 0.3);
     h1_nvtx->Draw();
-    h1_nvtxreal2->SetMaximum(50000);
+    h1_nvtxreal2->SetMaximum(45000);
     h1_nvtxreal2->SetLineColor(49);
     h1_nvtxreal2->SetFillColorAlpha(46, 0.45);
     h1_nvtxreal2->Draw("Sames");
@@ -41,7 +41,7 @@
     gStyle->SetLegendTextSize(0.02); //Legend
     auto leg1 = new TLegend(0.68, 0.50, 0.99, 0.30);
     leg1->AddEntry(h1_nvtx, "Vertices (lvl0)", "f");
-    leg1->AddEntry(h1_nvtxreal2, "#splitline{Vertices with at least}{2 final charged particles (lvl2)}", "f");
+    leg1->AddEntry(h1_nvtxreal2, "#splitline{Vertices with at least 2}{final charged particles (lvl2)}", "f");
     leg1->Draw();
     c1->Update();
     c1->Print("B0toKsJPsi-100k-histos.pdf");
@@ -62,9 +62,9 @@
     st2->SetY1NDC(0.75);
     st2->SetY2NDC(0.6);
 
-    auto leg2 = new TLegend(0.68, 0.50, 0.99, 0.30);
-    leg2->AddEntry(h1_nvtxreal2, "#splitline{Vertices with at least}{2 final charged particles (lvl2)} ", "f");
-    leg2->AddEntry(h1_nvtxreal3, "#splitline{Vertices with at least}{2 reconstructible particles (lvl3)}", "f");
+    auto leg2 = new TLegend(0.65, 0.50, 0.99, 0.30);
+    leg2->AddEntry(h1_nvtxreal2, "#splitline{Vertices with at least 2}{final charged particles (lvl2)} ", "f");
+    leg2->AddEntry(h1_nvtxreal3, "#splitline{Vertices with at least 2}{reconstructible particles (lvl3)}", "f");
     leg2->Draw();
     c1->Update();
     c1->Print("B0toKsJPsi-100k-histos.pdf");
@@ -87,10 +87,10 @@
 
     //**************************//
 
-    TH1F *h1_e_Fcharged = new TH1F("h1_e_Fcharged", "Number of final charged particles/Event;Nb of final charged particles", 22, 0, 22); //Final charged
+    TH1F *h1_e_Fcharged = new TH1F("h1_e_Fcharged", "Number of final charged particles/Event;Nb of final charged particles", 24, 0, 24); //Final charged
     outt->Draw("event.e_nFcharged>>h1_e_Fcharged", "id == 0");
     
-    TH1F *h1_Ftracks = new TH1F("h1_Ftracks", "Nb of final charged particles/Event;Nb of Charged", 22, 0, 22); //Final Charged that belong to vertices level 2
+    TH1F *h1_Ftracks = new TH1F("h1_Ftracks", "Nb of final charged particles/Event;Nb of Charged", 24, 0, 24); //Final Charged that belong to vertices level 2
     outt->Draw("event.e_nF2charged>>h1_Ftracks", "id == 0");
 
     h1_e_Fcharged->SetLineColor(800);
@@ -115,10 +115,10 @@
 
     //**************************//
 
-    TH1F *h1_e_Rcharged = new TH1F("h1_e_Rcharged", "Number of recontructible charged particles/Event;Nb of reconstructible charged particles", 28, 0, 28); //Reconstrutible
+    TH1F *h1_e_Rcharged = new TH1F("h1_e_Rcharged", "Number of recontructible charged particles/Event;Nb of reconstructible charged particles", 24, 0, 24); //Reconstrutible
     outt->Draw("event.e_nRcharged>>h1_e_Rcharged", "id==0");
 
-    TH1F *h1_Rtracks = new TH1F("h1_Rtracks", "Number of recontructible charged particles/Event;Nb of reconstructible charged particles", 28, 0, 28); //Charged that belong to vertices level 3
+    TH1F *h1_Rtracks = new TH1F("h1_Rtracks", "Number of recontructible charged particles/Event;Nb of reconstructible charged particles", 24, 0, 24); //Charged that belong to vertices level 3
     outt->Draw("event.e_nR2charged>>h1_Rtracks", "id==0");                                                                                        //(recontructable track)
 
     h1_e_Rcharged->SetLineColor(30);
@@ -201,7 +201,7 @@
     leg5->Draw();
     c1->Update();
     c1->Print("B0toKsJPsi-100k-histos.pdf");
-
+/*
     //2D histograms by vertex
     TH2F *h2_neut_vs_char = new TH2F("h2_neut_vs_char", "Nb of Neutral vs. Nb of Charged;Nb of Charged;Nb of Neutral", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nNeutral:nCharged>>h2_neut_vs_char");
@@ -230,8 +230,10 @@
     h2_pdg_rad->Draw("colz");
     c1->SetLogy();
     c1->Print("B0toKsJPsi-100k-histos.pdf");
-
+*/
     //**************************//
+
+    c1->SetLogx(0);
 
     //Radial position
 

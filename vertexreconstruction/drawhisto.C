@@ -46,7 +46,7 @@
     TH1F *h1_vtx_Y = new TH1F("h1_vtx_Y", "Decay vertex in Y ; Y in [cm]? ", 100, 0, 20);
     h1_vtx_Y->SetLineColor(kGreen + 2);
     h1_vtx_Y->SetFillColorAlpha(kGreen + 2, 0.55);
-    variables->Draw("vtx2_mcDecayVertexX>>h1_vtx_Y", "t1_mcID_m==t2_mcID_m");
+    variables->Draw("vtx2_mcDecayVertexY>>h1_vtx_Y", "t1_mcID_m==t2_mcID_m");
     c1->Print("vtx2B0toKsJPsi-1k-histos.pdf");
 
     c1->SetLogy(0);
