@@ -128,12 +128,15 @@ public:
    int vtxreal1;
    int vtxreal2;
    int vtxreal3;
+   int vtxreal4;
    int Neutral;
    int Charged;
    int Fcharged;
    int F2charged;
    int Rcharged;
    int R2charged;
+   int RInter;
+   int R2Inter;
    int totalvtx;
    int totalvtxreal;
    int totalFcharged;
@@ -153,12 +156,15 @@ public:
       int e_nvtxreal1;  //Number of vertices at level 1 in the event
       int e_nvtxreal2;  //Number of vertices at level 2  in the event
       int e_nvtxreal3;  //Number of vertices at level 3 in the event
+      int e_nvtxreal4;  //Number of vertices at level 4 in the event
       int e_nNeutral;   //Number of neutral particles in the event
       int e_nCharged;   //Number of charged particles in the event
       int e_nFcharged;  //Number of final charged particles in the event
       int e_nF2charged; //Number of final charged particles in the event belonging to vertices w at least 2 final charged
       int e_nRcharged;  //Number of reconstructible charged particles in the event
-      int e_nR2charged;  //Number of reconstructible charged particles in the event belonging to vertices w at least 2 reconstructable charged
+      int e_nR2charged; //Number of reconstructible charged particles in the event that belong to vertex w at least 2 reconstructable charged
+      int e_nRInter;    //Number of reconstructible charged particles or intermediate reconstructable in the event
+      int e_nR2Inter;   //Number of reconstructible charged particles in the event that belong to vertex w at least 2 reconstructable charged
    };
 
    struct event counter;
@@ -180,7 +186,7 @@ public:
    void daughterloop(int first, int last, int vId);
    int particlecharge(int entry);
    void identifyVertex(int entry);
-   int addvertex(int nc, int nn, int nR, int nFc, int vR, int vPdg, double x, double y, double z);
+   int addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int vR, int vPdg, double x, double y, double z);
    double pTransverse(int id);
    double prodAngle(int id);
    void booking();
@@ -309,12 +315,12 @@ Int_t readgentree::Cut(Long64_t entry)
    return 1;
 }
 
-int readgentree::addvertex(int nc, int nn, int nR, int nFc, int vR, int vPdg, double x, double y, double z)
+int readgentree::addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int vR, int vPdg, double x, double y, double z)
 {
    int id = vertexlist.size();
-   Mvertex v(id, nc, nn, nR, nFc, vR, vPdg); // Create object
-   v.Addposition(x, y, z);                   // Add position to the object
-   vertexlist.push_back(v);                  // Add object to the list of vertices (vector)
+   Mvertex v(id, m_id, nc, nn, nR, nFc, nRInter, vR, vPdg); // Create object
+   v.Addposition(x, y, z);                                  // Add position to the object
+   vertexlist.push_back(v);                                 // Add object to the list of vertices (vector)
 
    return id; // return vertex ID
 }
