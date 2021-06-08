@@ -68,29 +68,34 @@ public:
   void AddrstInter() { nRstInter++; }
   int IsReal() //Test if the vertex is a fake one and return bool value for realness
   {
-    if (nRstructed >= 2) // at least 2 reconstructible (lvl 3)
-    {
-      vReal = 3;
-      return vReal;
-    }
-    else if (nRstInter + nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructable (lvl 4)
+    if (nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructable (lvl 4)
     {
       vReal = 4;
+      //cout << "Lvl 4" << endl;
+      return vReal;
+    }
+    else if (nRstInter + nRstructed >= 2) // at least 2 reconstructible (lvl 3)
+    {
+      vReal = 3;
+      //cout << "Lvl 3" << endl;
       return vReal;
     }
     else if (nFinalcharged >= 2) // at least 2 final charged (lvl 2)
     {
       vReal = 2;
+      //cout << "Lvl 2" << endl;
       return vReal;
     }
     else if (nCharged >= 2) // at least 2 charged (lvl 1)
     {
       vReal = 1;
+      //cout << "Lvl 1" << endl;
       return vReal;
     }
     else // just a vertex (lvl 0)
     {
       vReal = 0;
+      //cout << "Lvl 0" << endl;
       return vReal;
     }
   }

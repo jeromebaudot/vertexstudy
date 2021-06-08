@@ -2,7 +2,7 @@
 // This class has been automatically generated on
 // Mon Feb  1 23:01:28 2021 by ROOT version 6.22/06
 // from TTree tree/tree
-// found on file: ./data/B0toKsJPsi-100k.root
+// found on file: ./data/continuumuds-100k.root
 //////////////////////////////////////////////////////////
 
 #ifndef readgentree_h
@@ -141,6 +141,7 @@ public:
    int totalvtxreal;
    int totalFcharged;
    int totalRcharged;
+   int totalRInter;
 
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
@@ -154,7 +155,7 @@ public:
       int e_id;         //id of the event
       int e_nvtx;       //Number of vertices in the event
       int e_nvtxreal1;  //Number of vertices at level 1 in the event
-      int e_nvtxreal2;  //Number of vertices at level 2  in the event
+      int e_nvtxreal2;  //Number of vertices at level 2 in the event
       int e_nvtxreal3;  //Number of vertices at level 3 in the event
       int e_nvtxreal4;  //Number of vertices at level 4 in the event
       int e_nNeutral;   //Number of neutral particles in the event
@@ -203,10 +204,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("./data/B0toKsJPsi-100k.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("./data/continuumuds-100k.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("./data/B0toKsJPsi-100k.root");
+         f = new TFile("./data/continuumuds-100k.root");
       }
       f->GetObject("tree", tree);
    }

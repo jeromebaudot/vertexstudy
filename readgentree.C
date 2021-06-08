@@ -4,7 +4,7 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("./data/B0toKsJPsi-100k-tree.root", "RECREATE");
+  outfile = new TFile("./data/continuumuds-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
@@ -193,28 +193,30 @@ void readgentree::daughterloop(int first, int last, int vId)
         vertexlist[vId].Addrstructed();
       }
 
-      if (vertexlist[vId].GetReal() < 3)
+      if (vertexlist[vId].GetReal() < 4)
       {
         vertexlist[vId].IsReal();
+        //cout << "Vertex: " << vId << " is a lvl " << vertexlist[vId].GetReal() << " vertex at checkpoint for reconstructed" << endl;
       }
 
       //cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
 
-      cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
-           << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
+      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
+      //     << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
     }
 
     else if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 0) // final neutral particle
     {
       vertexlist[vId].Addneutral();
-      cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
+      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
     }
 
     else if (decaytime(d - 1) == 0 && ndaughters(d - 1) != 0) // resonance
     {
+      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
+      
       // Recursive method for resonance
       daughterloop(MCParticles_m_firstDaughter[d - 1], MCParticles_m_lastDaughter[d - 1], vId);
-      cout << "Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
     }
 
     else if (decaytime(d - 1) != 0 && ndaughters(d - 1) != 0) // vertex (real or not)
@@ -223,7 +225,7 @@ void readgentree::daughterloop(int first, int last, int vId)
       {
         vertexlist[vId].Addcharged();
 
-        if (vertexlist[vId].GetReal() < 1)
+        if (vertexlist[vId].GetReal() == 0)
         {
           vertexlist[vId].IsReal();
         }
@@ -238,12 +240,15 @@ void readgentree::daughterloop(int first, int last, int vId)
       // Recursive method
       daughterloop(MCParticles_m_firstDaughter[d - 1], MCParticles_m_lastDaughter[d - 1], newid);
 
-      if (vertexlist[newid].IsReal() >= 3)
+      if (vertexlist[newid].GetReal() >= 3)
       {
         vertexlist[vId].AddrstInter();
-        if (vertexlist[vId].GetReal() < 4)
+        //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is an intermediate particle." << endl;
+        
+        if (vertexlist[vId].GetReal() < 3)
         {
           vertexlist[vId].IsReal();
+          //cout << "Vertex: " << vId << " is a lvl " << vertexlist[vId].GetReal() << " vertex at checkpoint for intermediate" << endl;
         }
       }
     }
@@ -329,11 +334,11 @@ void readgentree::identifyVertex(int event_id)
     {
       vtxreal2++;
     }
-    if (vertexlist[i].GetReal() == 3) //level 3: at least 2 reconstructible particles in the vertex
+    if (vertexlist[i].GetReal() == 3) //level 3: at least 2 reconstructible particles or intermetiate reconstructible in the vertex
     {
       vtxreal3++;
     }
-    if (vertexlist[i].GetReal() == 4) //level 4: at least 2 reconstructible particles or intermetiate reconstructable in the vertex
+    if (vertexlist[i].GetReal() == 4) //level 4: at least 2 reconstructible particles in the vertex
     {
       vtxreal4++;
     }
@@ -347,15 +352,15 @@ void readgentree::identifyVertex(int event_id)
       F2charged += vertexlist[i].GetNFinalcharged();
       //cout << "F2charged= " << F2charged << endl;
     }
-    if (vertexlist[i].GetReal() == 3)
-    {
-      R2charged += vertexlist[i].GetNrstructed();
-      //cout << "R2charged= " << R2charged << endl;
-    }
-    if (vertexlist[i].GetReal() == 4)
+    if (vertexlist[i].GetReal() >= 3)
     {
       R2Inter += vertexlist[i].GetNRstInter();
       //cout << "R2Inter= " << R2Inter << endl;
+    }
+    if (vertexlist[i].GetReal() == 4)
+    {
+      R2charged += vertexlist[i].GetNrstructed();
+      //cout << "R2charged= " << R2charged << endl;
     }
   }
 
@@ -379,7 +384,7 @@ void readgentree::identifyVertex(int event_id)
   for (int i = 0; i < vertexlist.size(); i++)
   {
 
-    cout << "->Vertex id: " << vertexlist[i].GetId() << ", id mother: " << vertexlist[i].Getm_id()
+    cout << "->Vertex id: " << vertexlist[i].GetId() << ", Mother vertex id: " << vertexlist[i].Getm_id()
          << ", nCharged: " << vertexlist[i].GetNcharged() << ", nNeutral: "
          << vertexlist[i].GetNneutral() << ", nReconstructed = " << vertexlist[i].GetNrstructed()
          << ", nFinalcharged = " << vertexlist[i].GetNFinalcharged() << ", nInter = " << vertexlist[i].GetNRstInter()
@@ -389,13 +394,14 @@ void readgentree::identifyVertex(int event_id)
     avertex->Copy(vertexlist[i]); // Transfer vertex properties to a separate object for tree fill
     outtree->Fill();              // Fill all tree branches
   }
-  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal (lvl3) Event Vertices: " << vtxreal3 << endl;
+  cout << "\nEvent Vertices: " << vertexlist.size() << "\nReal (lvl3 + lvl4) Event Vertices: " << vtxreal3 + vtxreal4 << endl;
 
   totalvtx += vertexlist.size();
-  totalvtxreal += vtxreal3;
+  totalvtxreal += vtxreal3 + vtxreal4;
   totalFcharged += Fcharged;
   totalRcharged += Rcharged;
+  totalRInter += RInter;
 
-  cout << "\n# Vertices Total: " << totalvtx << "\n# Real (lvl3) Vertices Total: " << totalvtxreal << endl;
-  cout << "\n# Final Charged Particles Total: " << totalFcharged << "\n# Reconstructible Particles Total: " << totalRcharged << endl;
+  cout << "\n# Vertices Total: " << totalvtx << "\n# Real (lvl3 + lvl4) Vertices Total: " << totalvtxreal << endl;
+  cout << "\n# Final Charged Particles Total: " << totalFcharged << "\n# Reconstructible Particles Total: " << totalRcharged << "\n# Intermediate Reconstructible Particles Total: " << totalRInter << endl;
 }
