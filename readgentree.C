@@ -201,19 +201,19 @@ void readgentree::daughterloop(int first, int last, int vId)
 
       //cout << "IsReal = " << vertexlist[vId].IsReal() << endl;
 
-      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
-      //     << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
+      cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final charged particle with prod. angle = "
+           << prodAngle(d - 1) << " deg and pT = " << pTransverse(d - 1) << " GeV/c" << endl;
     }
 
     else if (ndaughters(d - 1) == 0 && particlecharge(MCParticles_m_pdg[d - 1]) == 0) // final neutral particle
     {
       vertexlist[vId].Addneutral();
-      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
+      cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a final neutral particle." << endl;
     }
 
     else if (decaytime(d - 1) == 0 && ndaughters(d - 1) != 0) // resonance
     {
-      //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
+      cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is a resonance." << endl;
       
       // Recursive method for resonance
       daughterloop(MCParticles_m_firstDaughter[d - 1], MCParticles_m_lastDaughter[d - 1], vId);
@@ -243,7 +243,7 @@ void readgentree::daughterloop(int first, int last, int vId)
       if (vertexlist[newid].GetReal() >= 3)
       {
         vertexlist[vId].AddrstInter();
-        //cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is an intermediate particle." << endl;
+        cout << "Vertex: " << vId << ", Index no. " << d << ", pdg code: " << MCParticles_m_pdg[d - 1] << " is an intermediate particle." << endl;
         
         if (vertexlist[vId].GetReal() < 3)
         {
