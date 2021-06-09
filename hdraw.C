@@ -7,11 +7,11 @@
     // Display all histo one by one on the same canvas
     // Print them on an output file in PDF format
 
-    TFile f("./data/continuumuds-100k-tree.root");
+    TFile f("./data/B0toKsJPsi-100k-tree.root");
     TTree *outt = (TTree *)f.Get("outt");
 
     TCanvas *c1 = new TCanvas("c1", "Histograms", 80, 80, 900, 900);
-    c1->Print("./histo/continuumuds-100k-histos.pdf[");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf[");
 
     //By events
 
@@ -47,7 +47,7 @@
     leg1->AddEntry(h1_nvtxreal2, "#splitline{Vertices with at least 2}{final charged particles (lvl2)}", "f");
     leg1->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -70,7 +70,7 @@
     leg2->AddEntry(h1_nvtxreal4, "#splitline{Vertices with at least 2}{reconstructible particles (lvl4)}", "f");
     leg2->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -94,7 +94,7 @@
     leg24->AddEntry(h1_nvtxreal34, "#splitline{Vertices with at least}{#splitline{2 reconstructible or }{#splitline{intermediate particles}{(lvl3+4)}}}", "f");
     leg24->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -102,7 +102,7 @@
     h1_e_Neutral->SetLineColor(14);                                                                                    //neutral color
     h1_e_Neutral->SetFillColorAlpha(14, 0.45);
     outt->Draw("event.e_nNeutral>>h1_e_Neutral");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -110,7 +110,7 @@
     h1_e_Charged->SetLineColor(46);                                                                                    //charged color
     h1_e_Charged->SetFillColorAlpha(46, 0.45);
     outt->Draw("event.e_nCharged>>h1_e_Charged");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -118,7 +118,7 @@
     h1_e_nRInter->SetLineColor(kCyan + 2);                                                                                       //Intermediate color
     h1_e_nRInter->SetFillColorAlpha(kCyan + 2, 0.45);
     outt->Draw("event.e_nRInter>>h1_e_nRInter");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
     
     //**************************//
 
@@ -146,7 +146,7 @@
     leg3->AddEntry(h1_Ftracks, "#splitline{Final tracks that belong to}{#splitline{vertices with at least 2}{final charged particles}}", "f");
     leg3->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -174,7 +174,7 @@
     leg4->AddEntry(h1_Rtracks, "#splitline{Reconstructible tracks}{#splitline{that belong to vertices with}{#splitline{at least 2 reconstructible}{charged particles}}}", "f");
     leg4->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -202,7 +202,7 @@
     leg4Inter->AddEntry(h1_RIntertracks, "#splitline{Intermediate tracks}{#splitline{that belong to vertices with}{#splitline{at least 2 reconstructible}{or intermediate particles}}}", "f");
     leg4Inter->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
     //By vertices
@@ -211,31 +211,31 @@
     h1_v_Neutral->SetLineColor(14);
     h1_v_Neutral->SetFillColorAlpha(14, 0.45);
     outt->Draw("nNeutral>>h1_v_Neutral");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH1F *h1_v_Charged = new TH1F("h1_v_Charged", "Number of charged particles/Vertex;Nb of particles", 20, 0, 20);
     h1_v_Charged->SetLineColor(860);
     h1_v_Charged->SetFillColorAlpha(860, 0.55);
     outt->Draw("nCharged>>h1_v_Charged");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH1F *h1_v_Fcharged = new TH1F("h1_v_Fcharged", "Number of final charged particles/Vertex;Nb of particles", 20, 0, 20);
     h1_v_Fcharged->SetLineColor(804);
     h1_v_Fcharged->SetFillColorAlpha(804, 0.55);
     outt->Draw("nFinalcharged>>h1_v_Fcharged");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH1F *h1_v_Rcharged = new TH1F("h1_v_Rcharged", "Number of reconstructible particles/Vertex;Nb of particles", 20, 0, 20);
     h1_v_Rcharged->SetLineColor(418);
     h1_v_Rcharged->SetFillColorAlpha(418, 0.55);
     outt->Draw("nRstructed>>h1_v_Rcharged");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH1F *h1_v_RInter = new TH1F("h1_v_RInter", "Number of reconstructible intermediate particles/Vertex;Nb of particles", 10, 0, 10);
     h1_v_RInter->SetLineColor(kCyan + 2);
     h1_v_RInter->SetFillColorAlpha(kCyan + 2, 0.55);
     outt->Draw("nRstInter>>h1_v_RInter");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -268,7 +268,7 @@
     leg5->AddEntry(h1_pdg_real, "Reconstructible", "f");
     leg5->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
 
@@ -296,7 +296,7 @@
     leg5Inter->AddEntry(h1_pdg_realInter, "#splitline{Reconstructible and}{intermediates}", "f");
     leg5Inter->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     //**************************//
     /*
@@ -306,28 +306,28 @@
     h2_neut_vs_char->Draw("colz");
     c1->SetLogy(0);
     c1->SetLogx(0);
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH2F *h2_fchar_vs_char = new TH2F("h2_fchar_vs_char", "Nb of Final charged vs. Nb of Charged;Nb of Charged;Nb of Final charged", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nFinalcharged:nCharged>>h2_fchar_vs_char");
     h2_fchar_vs_char->Draw("colz");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH2F *h2_rchar_vs_char = new TH2F("h2_rchar_vs_char", "Nb of Reconstructible vs. Nb of Charged;Nb of Charged;Nb of Reconstructible", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nRstructed:nCharged>>h2_rchar_vs_char");
     h2_rchar_vs_char->Draw("colz");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH2F *h2_rchar_vs_fchar = new TH2F("h2_rchar_vs_fchar", "Nb of Reconstructible vs. Nb of Final charged; Nb of Final charged;Nb of Reconstructible", 30, 0, 10, 30, 0, 10); // over vertices
     outt->Draw("nRstructed:nFinalcharged>>h2_rchar_vs_fchar");
     h2_rchar_vs_fchar->Draw("colz");
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
     
     TH2F *h2_pdg_rad = new TH2F("h2_pdg_rad", "PDG ID vs. Radial distance;Distance [cm];PDG ID", 200, 0, 10, 10000, 0, 10000);
     outt->Draw("abs(vPdg):radialpos>>h2_pdg_rad", "vReal==3");
     h2_pdg_rad->Draw("colz");
     c1->SetLogy();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
     */
     //**************************//
 
@@ -371,7 +371,7 @@
     leg6->AddEntry(h1_rad_pipe, "#splitline{Real vertices inside}{the beam pipe}", "f");
     leg6->Draw();
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
     TH1F *h1_rad_r = new TH1F("h1_rad_r", "Radial distance of vertices; distance [cm]", 100, 0, 2); //cumulative
     outt->Draw("radialpos>>h1_rad_r", "vReal>=3");
@@ -382,8 +382,8 @@
     c1->SetGrid();
     c1->SetLogy(0);
     c1->Update();
-    c1->Print("./histo/continuumuds-100k-histos.pdf");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf");
 
-    c1->Print("./histo/continuumuds-100k-histos.pdf]");
+    c1->Print("./histo/B0toKsJPsi-100k-histos.pdf]");
     f.Close();
 }

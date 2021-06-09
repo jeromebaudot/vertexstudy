@@ -68,7 +68,7 @@ public:
   void AddrstInter() { nRstInter++; }
   int IsReal() //Test if the vertex is a fake one and return bool value for realness
   {
-    if (nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructable (lvl 4)
+    if (nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructible (lvl 4)
     {
       vReal = 4;
       //cout << "Lvl 4" << endl;

@@ -4,7 +4,7 @@
 //*****************************************************************
 void readgentree::booking() //booking the tree and histograms
 {
-  outfile = new TFile("./data/continuumuds-100k-tree.root", "RECREATE");
+  outfile = new TFile("./data/B0toKsJPsi-100k-tree.root", "RECREATE");
   outtree = new TTree("outt", "Vertex information");
   //TBranch *b = fEventTree->Branch("fEvent","DEvent",&fEvent,64000,99);
 
