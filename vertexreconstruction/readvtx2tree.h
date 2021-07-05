@@ -11,15 +11,41 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TTree.h>
+#include <TH2.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TMath.h>
+
+#include <vector>
 
 // Header file for the classes stored in the TTree if any.
+#include "TClonesArray.h"
+#include "TObject.h"
 
-class readvtx2tree {
-public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-   Int_t           fCurrent; //!current Tree number in a TChain
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TH2.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TMath.h>
 
-// Fixed size dimensions of array or collections stored in the TTree if any.
+#include "mvertex_vtx2.h"
+#include <vector>
+
+// Header file for the classes stored in the TTree if any.
+#include "TClonesArray.h"
+#include "TObject.h"
+
+class readvtx2tree
+{
+public:
+   TTree *fChain;  //!pointer to the analyzed TTree or TChain
+   Int_t fCurrent; //!current Tree number in a TChain
+
+   // Fixed size dimensions of array or collections stored in the TTree if any.
    static constexpr Int_t kMax__experiment_ = 1;
    static constexpr Int_t kMax__run_ = 1;
    static constexpr Int_t kMax__event_ = 1;
@@ -28,375 +54,438 @@ public :
    static constexpr Int_t kMax__weight_ = 1;
 
    // Declaration of leaf types
-   Int_t           __experiment__;
-   Int_t           __run__;
-   Int_t           __event__;
-   Int_t           __candidate__;
-   Int_t           __ncandidates__;
-   Double_t        __weight__;
-   Double_t        vtx2_isSignal;
-   Double_t        vtx2_mcErrors;
-   Double_t        vtx2_mcPDG;
-   Double_t        vtx2_mcE;
-   Double_t        vtx2_mcP;
-   Double_t        vtx2_mcPT;
-   Double_t        vtx2_mcPX;
-   Double_t        vtx2_mcPY;
-   Double_t        vtx2_mcPZ;
-   Double_t        vtx2_mcPhi;
-   Double_t        vtx2_mcDecayVertexX;
-   Double_t        vtx2_mcDecayVertexY;
-   Double_t        vtx2_mcDecayVertexZ;
-   Double_t        vtx2_mcDecayVertexFromIPDistance;
-   Double_t        vtx2_mcDecayVertexRho;
-   Double_t        vtx2_mcProductionVertexX;
-   Double_t        vtx2_mcProductionVertexY;
-   Double_t        vtx2_mcProductionVertexZ;
-   Double_t        vtx2_nTracks;
-   Double_t        vtx2_distance;
-   Double_t        vtx2_significanceOfDistance;
-   Double_t        vtx2_dx;
-   Double_t        vtx2_dy;
-   Double_t        vtx2_dz;
-   Double_t        vtx2_x;
-   Double_t        vtx2_y;
-   Double_t        vtx2_z;
-   Double_t        vtx2_x_uncertainty;
-   Double_t        vtx2_y_uncertainty;
-   Double_t        vtx2_z_uncertainty;
-   Double_t        vtx2_dr;
-   Double_t        vtx2_dphi;
-   Double_t        vtx2_dcosTheta;
-   Double_t        vtx2_prodVertexX;
-   Double_t        vtx2_prodVertexY;
-   Double_t        vtx2_prodVertexZ;
-   Double_t        vtx2_prodVertexXErr;
-   Double_t        vtx2_prodVertexYErr;
-   Double_t        vtx2_prodVertexZErr;
-   Double_t        vtx2_chiProb;
-   Double_t        vtx2_genID;
-   Double_t        vtx2_mcPDG_m;
-   Double_t        vtx2_mcPDG_gm;
-   Double_t        vtx2_mcPDG_ggm;
-   Double_t        vtx2_mcPDG_gggm;
-   Double_t        vtx2_mcID_m;
-   Double_t        vtx2_mcID_gm;
-   Double_t        vtx2_mcID_ggm;
-   Double_t        vtx2_mcID_gggm;
-   Double_t        vtx2_mcIsMissing;
-   Double_t        vtx2_isCloneTrack;
-   Double_t        t1_isSignal;
-   Double_t        t1_mcErrors;
-   Double_t        t1_mcPDG;
-   Double_t        t1_mcE;
-   Double_t        t1_mcP;
-   Double_t        t1_mcPT;
-   Double_t        t1_mcPX;
-   Double_t        t1_mcPY;
-   Double_t        t1_mcPZ;
-   Double_t        t1_mcPhi;
-   Double_t        t1_mcDecayVertexX;
-   Double_t        t1_mcDecayVertexY;
-   Double_t        t1_mcDecayVertexZ;
-   Double_t        t1_mcDecayVertexFromIPDistance;
-   Double_t        t1_mcDecayVertexRho;
-   Double_t        t1_mcProductionVertexX;
-   Double_t        t1_mcProductionVertexY;
-   Double_t        t1_mcProductionVertexZ;
-   Double_t        t1_nTracks;
-   Double_t        t1_distance;
-   Double_t        t1_significanceOfDistance;
-   Double_t        t1_dx;
-   Double_t        t1_dy;
-   Double_t        t1_dz;
-   Double_t        t1_x;
-   Double_t        t1_y;
-   Double_t        t1_z;
-   Double_t        t1_x_uncertainty;
-   Double_t        t1_y_uncertainty;
-   Double_t        t1_z_uncertainty;
-   Double_t        t1_dr;
-   Double_t        t1_dphi;
-   Double_t        t1_dcosTheta;
-   Double_t        t1_prodVertexX;
-   Double_t        t1_prodVertexY;
-   Double_t        t1_prodVertexZ;
-   Double_t        t1_prodVertexXErr;
-   Double_t        t1_prodVertexYErr;
-   Double_t        t1_prodVertexZErr;
-   Double_t        t1_chiProb;
-   Double_t        t1_genID;
-   Double_t        t1_mcPDG_m;
-   Double_t        t1_mcPDG_gm;
-   Double_t        t1_mcPDG_ggm;
-   Double_t        t1_mcPDG_gggm;
-   Double_t        t1_mcID_m;
-   Double_t        t1_mcID_gm;
-   Double_t        t1_mcID_ggm;
-   Double_t        t1_mcID_gggm;
-   Double_t        t1_mcIsMissing;
-   Double_t        t1_isCloneTrack;
-   Double_t        t2_isSignal;
-   Double_t        t2_mcErrors;
-   Double_t        t2_mcPDG;
-   Double_t        t2_mcE;
-   Double_t        t2_mcP;
-   Double_t        t2_mcPT;
-   Double_t        t2_mcPX;
-   Double_t        t2_mcPY;
-   Double_t        t2_mcPZ;
-   Double_t        t2_mcPhi;
-   Double_t        t2_mcDecayVertexX;
-   Double_t        t2_mcDecayVertexY;
-   Double_t        t2_mcDecayVertexZ;
-   Double_t        t2_mcDecayVertexFromIPDistance;
-   Double_t        t2_mcDecayVertexRho;
-   Double_t        t2_mcProductionVertexX;
-   Double_t        t2_mcProductionVertexY;
-   Double_t        t2_mcProductionVertexZ;
-   Double_t        t2_nTracks;
-   Double_t        t2_distance;
-   Double_t        t2_significanceOfDistance;
-   Double_t        t2_dx;
-   Double_t        t2_dy;
-   Double_t        t2_dz;
-   Double_t        t2_x;
-   Double_t        t2_y;
-   Double_t        t2_z;
-   Double_t        t2_x_uncertainty;
-   Double_t        t2_y_uncertainty;
-   Double_t        t2_z_uncertainty;
-   Double_t        t2_dr;
-   Double_t        t2_dphi;
-   Double_t        t2_dcosTheta;
-   Double_t        t2_prodVertexX;
-   Double_t        t2_prodVertexY;
-   Double_t        t2_prodVertexZ;
-   Double_t        t2_prodVertexXErr;
-   Double_t        t2_prodVertexYErr;
-   Double_t        t2_prodVertexZErr;
-   Double_t        t2_chiProb;
-   Double_t        t2_genID;
-   Double_t        t2_mcPDG_m;
-   Double_t        t2_mcPDG_gm;
-   Double_t        t2_mcPDG_ggm;
-   Double_t        t2_mcPDG_gggm;
-   Double_t        t2_mcID_m;
-   Double_t        t2_mcID_gm;
-   Double_t        t2_mcID_ggm;
-   Double_t        t2_mcID_gggm;
-   Double_t        t2_mcIsMissing;
-   Double_t        t2_isCloneTrack;
+   Int_t __experiment__;
+   Int_t __run__;
+   Int_t __event__;
+   Int_t __candidate__;
+   Int_t __ncandidates__;
+   Double_t __weight__;
+   Double_t vtx2_isSignal;
+   Double_t vtx2_mcErrors;
+   Double_t vtx2_mcPDG;
+   Double_t vtx2_mcE;
+   Double_t vtx2_mcP;
+   Double_t vtx2_mcPT;
+   Double_t vtx2_mcPX;
+   Double_t vtx2_mcPY;
+   Double_t vtx2_mcPZ;
+   Double_t vtx2_mcPhi;
+   Double_t vtx2_mcDecayVertexX;
+   Double_t vtx2_mcDecayVertexY;
+   Double_t vtx2_mcDecayVertexZ;
+   Double_t vtx2_mcDecayVertexFromIPDistance;
+   Double_t vtx2_mcDecayVertexRho;
+   Double_t vtx2_mcProductionVertexX;
+   Double_t vtx2_mcProductionVertexY;
+   Double_t vtx2_mcProductionVertexZ;
+   Double_t vtx2_nTracks;
+   Double_t vtx2_distance;
+   Double_t vtx2_significanceOfDistance;
+   Double_t vtx2_dx;
+   Double_t vtx2_dy;
+   Double_t vtx2_dz;
+   Double_t vtx2_x;
+   Double_t vtx2_y;
+   Double_t vtx2_z;
+   Double_t vtx2_x_uncertainty;
+   Double_t vtx2_y_uncertainty;
+   Double_t vtx2_z_uncertainty;
+   Double_t vtx2_dr;
+   Double_t vtx2_dphi;
+   Double_t vtx2_dcosTheta;
+   Double_t vtx2_prodVertexX;
+   Double_t vtx2_prodVertexY;
+   Double_t vtx2_prodVertexZ;
+   Double_t vtx2_prodVertexXErr;
+   Double_t vtx2_prodVertexYErr;
+   Double_t vtx2_prodVertexZErr;
+   Double_t vtx2_chiProb;
+   Double_t vtx2_genID;
+   Double_t vtx2_mcPDG_m;
+   Double_t vtx2_mcPDG_gm;
+   Double_t vtx2_mcPDG_ggm;
+   Double_t vtx2_mcPDG_gggm;
+   Double_t vtx2_mcID_m;
+   Double_t vtx2_mcID_gm;
+   Double_t vtx2_mcID_ggm;
+   Double_t vtx2_mcID_gggm;
+   Double_t vtx2_mcIsMissing;
+   Double_t vtx2_isCloneTrack;
+   Double_t vtx2_mcDecayTime;
+   Double_t vtx2_charge;
+   Double_t vtx2_nDaughters;
+   Double_t t1_isSignal;
+   Double_t t1_mcErrors;
+   Double_t t1_mcPDG;
+   Double_t t1_mcE;
+   Double_t t1_mcP;
+   Double_t t1_mcPT;
+   Double_t t1_mcPX;
+   Double_t t1_mcPY;
+   Double_t t1_mcPZ;
+   Double_t t1_mcPhi;
+   Double_t t1_mcDecayVertexX;
+   Double_t t1_mcDecayVertexY;
+   Double_t t1_mcDecayVertexZ;
+   Double_t t1_mcDecayVertexFromIPDistance;
+   Double_t t1_mcDecayVertexRho;
+   Double_t t1_mcProductionVertexX;
+   Double_t t1_mcProductionVertexY;
+   Double_t t1_mcProductionVertexZ;
+   Double_t t1_nTracks;
+   Double_t t1_distance;
+   Double_t t1_significanceOfDistance;
+   Double_t t1_dx;
+   Double_t t1_dy;
+   Double_t t1_dz;
+   Double_t t1_x;
+   Double_t t1_y;
+   Double_t t1_z;
+   Double_t t1_x_uncertainty;
+   Double_t t1_y_uncertainty;
+   Double_t t1_z_uncertainty;
+   Double_t t1_dr;
+   Double_t t1_dphi;
+   Double_t t1_dcosTheta;
+   Double_t t1_prodVertexX;
+   Double_t t1_prodVertexY;
+   Double_t t1_prodVertexZ;
+   Double_t t1_prodVertexXErr;
+   Double_t t1_prodVertexYErr;
+   Double_t t1_prodVertexZErr;
+   Double_t t1_chiProb;
+   Double_t t1_genID;
+   Double_t t1_mcPDG_m;
+   Double_t t1_mcPDG_gm;
+   Double_t t1_mcPDG_ggm;
+   Double_t t1_mcPDG_gggm;
+   Double_t t1_mcID_m;
+   Double_t t1_mcID_gm;
+   Double_t t1_mcID_ggm;
+   Double_t t1_mcID_gggm;
+   Double_t t1_mcIsMissing;
+   Double_t t1_isCloneTrack;
+   Double_t t1_mcDecayTime;
+   Double_t t1_charge;
+   Double_t t1_nDaughters;
+   Double_t t2_isSignal;
+   Double_t t2_mcErrors;
+   Double_t t2_mcPDG;
+   Double_t t2_mcE;
+   Double_t t2_mcP;
+   Double_t t2_mcPT;
+   Double_t t2_mcPX;
+   Double_t t2_mcPY;
+   Double_t t2_mcPZ;
+   Double_t t2_mcPhi;
+   Double_t t2_mcDecayVertexX;
+   Double_t t2_mcDecayVertexY;
+   Double_t t2_mcDecayVertexZ;
+   Double_t t2_mcDecayVertexFromIPDistance;
+   Double_t t2_mcDecayVertexRho;
+   Double_t t2_mcProductionVertexX;
+   Double_t t2_mcProductionVertexY;
+   Double_t t2_mcProductionVertexZ;
+   Double_t t2_nTracks;
+   Double_t t2_distance;
+   Double_t t2_significanceOfDistance;
+   Double_t t2_dx;
+   Double_t t2_dy;
+   Double_t t2_dz;
+   Double_t t2_x;
+   Double_t t2_y;
+   Double_t t2_z;
+   Double_t t2_x_uncertainty;
+   Double_t t2_y_uncertainty;
+   Double_t t2_z_uncertainty;
+   Double_t t2_dr;
+   Double_t t2_dphi;
+   Double_t t2_dcosTheta;
+   Double_t t2_prodVertexX;
+   Double_t t2_prodVertexY;
+   Double_t t2_prodVertexZ;
+   Double_t t2_prodVertexXErr;
+   Double_t t2_prodVertexYErr;
+   Double_t t2_prodVertexZErr;
+   Double_t t2_chiProb;
+   Double_t t2_genID;
+   Double_t t2_mcPDG_m;
+   Double_t t2_mcPDG_gm;
+   Double_t t2_mcPDG_ggm;
+   Double_t t2_mcPDG_gggm;
+   Double_t t2_mcID_m;
+   Double_t t2_mcID_gm;
+   Double_t t2_mcID_ggm;
+   Double_t t2_mcID_gggm;
+   Double_t t2_mcIsMissing;
+   Double_t t2_isCloneTrack;
+   Double_t t2_mcDecayTime;
+   Double_t t2_charge;
+   Double_t t2_nDaughters;
 
    // List of branches
-   TBranch        *b___experiment__;   //!
-   TBranch        *b___run__;   //!
-   TBranch        *b___event__;   //!
-   TBranch        *b___candidate__;   //!
-   TBranch        *b___ncandidates__;   //!
-   TBranch        *b___weight__;   //!
-   TBranch        *b_vtx2_isSignal;   //!
-   TBranch        *b_vtx2_mcErrors;   //!
-   TBranch        *b_vtx2_mcPDG;   //!
-   TBranch        *b_vtx2_mcE;   //!
-   TBranch        *b_vtx2_mcP;   //!
-   TBranch        *b_vtx2_mcPT;   //!
-   TBranch        *b_vtx2_mcPX;   //!
-   TBranch        *b_vtx2_mcPY;   //!
-   TBranch        *b_vtx2_mcPZ;   //!
-   TBranch        *b_vtx2_mcPhi;   //!
-   TBranch        *b_vtx2_mcDecayVertexX;   //!
-   TBranch        *b_vtx2_mcDecayVertexY;   //!
-   TBranch        *b_vtx2_mcDecayVertexZ;   //!
-   TBranch        *b_vtx2_mcDecayVertexFromIPDistance;   //!
-   TBranch        *b_vtx2_mcDecayVertexRho;   //!
-   TBranch        *b_vtx2_mcProductionVertexX;   //!
-   TBranch        *b_vtx2_mcProductionVertexY;   //!
-   TBranch        *b_vtx2_mcProductionVertexZ;   //!
-   TBranch        *b_vtx2_nTracks;   //!
-   TBranch        *b_vtx2_distance;   //!
-   TBranch        *b_vtx2_significanceOfDistance;   //!
-   TBranch        *b_vtx2_dx;   //!
-   TBranch        *b_vtx2_dy;   //!
-   TBranch        *b_vtx2_dz;   //!
-   TBranch        *b_vtx2_x;   //!
-   TBranch        *b_vtx2_y;   //!
-   TBranch        *b_vtx2_z;   //!
-   TBranch        *b_vtx2_x_uncertainty;   //!
-   TBranch        *b_vtx2_y_uncertainty;   //!
-   TBranch        *b_vtx2_z_uncertainty;   //!
-   TBranch        *b_vtx2_dr;   //!
-   TBranch        *b_vtx2_dphi;   //!
-   TBranch        *b_vtx2_dcosTheta;   //!
-   TBranch        *b_vtx2_prodVertexX;   //!
-   TBranch        *b_vtx2_prodVertexY;   //!
-   TBranch        *b_vtx2_prodVertexZ;   //!
-   TBranch        *b_vtx2_prodVertexXErr;   //!
-   TBranch        *b_vtx2_prodVertexYErr;   //!
-   TBranch        *b_vtx2_prodVertexZErr;   //!
-   TBranch        *b_vtx2_chiProb;   //!
-   TBranch        *b_vtx2_genID;   //!
-   TBranch        *b_vtx2_mcPDG_m;   //!
-   TBranch        *b_vtx2_mcPDG_gm;   //!
-   TBranch        *b_vtx2_mcPDG_ggm;   //!
-   TBranch        *b_vtx2_mcPDG_gggm;   //!
-   TBranch        *b_vtx2_mcID_m;   //!
-   TBranch        *b_vtx2_mcID_gm;   //!
-   TBranch        *b_vtx2_mcID_ggm;   //!
-   TBranch        *b_vtx2_mcID_gggm;   //!
-   TBranch        *b_vtx2_mcIsMissing;   //!
-   TBranch        *b_vtx2_isCloneTrack;   //!
-   TBranch        *b_t1_isSignal;   //!
-   TBranch        *b_t1_mcErrors;   //!
-   TBranch        *b_t1_mcPDG;   //!
-   TBranch        *b_t1_mcE;   //!
-   TBranch        *b_t1_mcP;   //!
-   TBranch        *b_t1_mcPT;   //!
-   TBranch        *b_t1_mcPX;   //!
-   TBranch        *b_t1_mcPY;   //!
-   TBranch        *b_t1_mcPZ;   //!
-   TBranch        *b_t1_mcPhi;   //!
-   TBranch        *b_t1_mcDecayVertexX;   //!
-   TBranch        *b_t1_mcDecayVertexY;   //!
-   TBranch        *b_t1_mcDecayVertexZ;   //!
-   TBranch        *b_t1_mcDecayVertexFromIPDistance;   //!
-   TBranch        *b_t1_mcDecayVertexRho;   //!
-   TBranch        *b_t1_mcProductionVertexX;   //!
-   TBranch        *b_t1_mcProductionVertexY;   //!
-   TBranch        *b_t1_mcProductionVertexZ;   //!
-   TBranch        *b_t1_nTracks;   //!
-   TBranch        *b_t1_distance;   //!
-   TBranch        *b_t1_significanceOfDistance;   //!
-   TBranch        *b_t1_dx;   //!
-   TBranch        *b_t1_dy;   //!
-   TBranch        *b_t1_dz;   //!
-   TBranch        *b_t1_x;   //!
-   TBranch        *b_t1_y;   //!
-   TBranch        *b_t1_z;   //!
-   TBranch        *b_t1_x_uncertainty;   //!
-   TBranch        *b_t1_y_uncertainty;   //!
-   TBranch        *b_t1_z_uncertainty;   //!
-   TBranch        *b_t1_dr;   //!
-   TBranch        *b_t1_dphi;   //!
-   TBranch        *b_t1_dcosTheta;   //!
-   TBranch        *b_t1_prodVertexX;   //!
-   TBranch        *b_t1_prodVertexY;   //!
-   TBranch        *b_t1_prodVertexZ;   //!
-   TBranch        *b_t1_prodVertexXErr;   //!
-   TBranch        *b_t1_prodVertexYErr;   //!
-   TBranch        *b_t1_prodVertexZErr;   //!
-   TBranch        *b_t1_chiProb;   //!
-   TBranch        *b_t1_genID;   //!
-   TBranch        *b_t1_mcPDG_m;   //!
-   TBranch        *b_t1_mcPDG_gm;   //!
-   TBranch        *b_t1_mcPDG_ggm;   //!
-   TBranch        *b_t1_mcPDG_gggm;   //!
-   TBranch        *b_t1_mcID_m;   //!
-   TBranch        *b_t1_mcID_gm;   //!
-   TBranch        *b_t1_mcID_ggm;   //!
-   TBranch        *b_t1_mcID_gggm;   //!
-   TBranch        *b_t1_mcIsMissing;   //!
-   TBranch        *b_t1_isCloneTrack;   //!
-   TBranch        *b_t2_isSignal;   //!
-   TBranch        *b_t2_mcErrors;   //!
-   TBranch        *b_t2_mcPDG;   //!
-   TBranch        *b_t2_mcE;   //!
-   TBranch        *b_t2_mcP;   //!
-   TBranch        *b_t2_mcPT;   //!
-   TBranch        *b_t2_mcPX;   //!
-   TBranch        *b_t2_mcPY;   //!
-   TBranch        *b_t2_mcPZ;   //!
-   TBranch        *b_t2_mcPhi;   //!
-   TBranch        *b_t2_mcDecayVertexX;   //!
-   TBranch        *b_t2_mcDecayVertexY;   //!
-   TBranch        *b_t2_mcDecayVertexZ;   //!
-   TBranch        *b_t2_mcDecayVertexFromIPDistance;   //!
-   TBranch        *b_t2_mcDecayVertexRho;   //!
-   TBranch        *b_t2_mcProductionVertexX;   //!
-   TBranch        *b_t2_mcProductionVertexY;   //!
-   TBranch        *b_t2_mcProductionVertexZ;   //!
-   TBranch        *b_t2_nTracks;   //!
-   TBranch        *b_t2_distance;   //!
-   TBranch        *b_t2_significanceOfDistance;   //!
-   TBranch        *b_t2_dx;   //!
-   TBranch        *b_t2_dy;   //!
-   TBranch        *b_t2_dz;   //!
-   TBranch        *b_t2_x;   //!
-   TBranch        *b_t2_y;   //!
-   TBranch        *b_t2_z;   //!
-   TBranch        *b_t2_x_uncertainty;   //!
-   TBranch        *b_t2_y_uncertainty;   //!
-   TBranch        *b_t2_z_uncertainty;   //!
-   TBranch        *b_t2_dr;   //!
-   TBranch        *b_t2_dphi;   //!
-   TBranch        *b_t2_dcosTheta;   //!
-   TBranch        *b_t2_prodVertexX;   //!
-   TBranch        *b_t2_prodVertexY;   //!
-   TBranch        *b_t2_prodVertexZ;   //!
-   TBranch        *b_t2_prodVertexXErr;   //!
-   TBranch        *b_t2_prodVertexYErr;   //!
-   TBranch        *b_t2_prodVertexZErr;   //!
-   TBranch        *b_t2_chiProb;   //!
-   TBranch        *b_t2_genID;   //!
-   TBranch        *b_t2_mcPDG_m;   //!
-   TBranch        *b_t2_mcPDG_gm;   //!
-   TBranch        *b_t2_mcPDG_ggm;   //!
-   TBranch        *b_t2_mcPDG_gggm;   //!
-   TBranch        *b_t2_mcID_m;   //!
-   TBranch        *b_t2_mcID_gm;   //!
-   TBranch        *b_t2_mcID_ggm;   //!
-   TBranch        *b_t2_mcID_gggm;   //!
-   TBranch        *b_t2_mcIsMissing;   //!
-   TBranch        *b_t2_isCloneTrack;   //!
+   TBranch *b___experiment__;                   //!
+   TBranch *b___run__;                          //!
+   TBranch *b___event__;                        //!
+   TBranch *b___candidate__;                    //!
+   TBranch *b___ncandidates__;                  //!
+   TBranch *b___weight__;                       //!
+   TBranch *b_vtx2_isSignal;                    //!
+   TBranch *b_vtx2_mcErrors;                    //!
+   TBranch *b_vtx2_mcPDG;                       //!
+   TBranch *b_vtx2_mcE;                         //!
+   TBranch *b_vtx2_mcP;                         //!
+   TBranch *b_vtx2_mcPT;                        //!
+   TBranch *b_vtx2_mcPX;                        //!
+   TBranch *b_vtx2_mcPY;                        //!
+   TBranch *b_vtx2_mcPZ;                        //!
+   TBranch *b_vtx2_mcPhi;                       //!
+   TBranch *b_vtx2_mcDecayVertexX;              //!
+   TBranch *b_vtx2_mcDecayVertexY;              //!
+   TBranch *b_vtx2_mcDecayVertexZ;              //!
+   TBranch *b_vtx2_mcDecayVertexFromIPDistance; //!
+   TBranch *b_vtx2_mcDecayVertexRho;            //!
+   TBranch *b_vtx2_mcProductionVertexX;         //!
+   TBranch *b_vtx2_mcProductionVertexY;         //!
+   TBranch *b_vtx2_mcProductionVertexZ;         //!
+   TBranch *b_vtx2_nTracks;                     //!
+   TBranch *b_vtx2_distance;                    //!
+   TBranch *b_vtx2_significanceOfDistance;      //!
+   TBranch *b_vtx2_dx;                          //!
+   TBranch *b_vtx2_dy;                          //!
+   TBranch *b_vtx2_dz;                          //!
+   TBranch *b_vtx2_x;                           //!
+   TBranch *b_vtx2_y;                           //!
+   TBranch *b_vtx2_z;                           //!
+   TBranch *b_vtx2_x_uncertainty;               //!
+   TBranch *b_vtx2_y_uncertainty;               //!
+   TBranch *b_vtx2_z_uncertainty;               //!
+   TBranch *b_vtx2_dr;                          //!
+   TBranch *b_vtx2_dphi;                        //!
+   TBranch *b_vtx2_dcosTheta;                   //!
+   TBranch *b_vtx2_prodVertexX;                 //!
+   TBranch *b_vtx2_prodVertexY;                 //!
+   TBranch *b_vtx2_prodVertexZ;                 //!
+   TBranch *b_vtx2_prodVertexXErr;              //!
+   TBranch *b_vtx2_prodVertexYErr;              //!
+   TBranch *b_vtx2_prodVertexZErr;              //!
+   TBranch *b_vtx2_chiProb;                     //!
+   TBranch *b_vtx2_genID;                       //!
+   TBranch *b_vtx2_mcPDG_m;                     //!
+   TBranch *b_vtx2_mcPDG_gm;                    //!
+   TBranch *b_vtx2_mcPDG_ggm;                   //!
+   TBranch *b_vtx2_mcPDG_gggm;                  //!
+   TBranch *b_vtx2_mcID_m;                      //!
+   TBranch *b_vtx2_mcID_gm;                     //!
+   TBranch *b_vtx2_mcID_ggm;                    //!
+   TBranch *b_vtx2_mcID_gggm;                   //!
+   TBranch *b_vtx2_mcIsMissing;                 //!
+   TBranch *b_vtx2_isCloneTrack;                //!
+   TBranch *b_vtx2_mcDecayTime;                 //!
+   TBranch *b_vtx2_charge;                      //!
+   TBranch *b_vtx2_nDaughters;                  //!
+   TBranch *b_t1_isSignal;                      //!
+   TBranch *b_t1_mcErrors;                      //!
+   TBranch *b_t1_mcPDG;                         //!
+   TBranch *b_t1_mcE;                           //!
+   TBranch *b_t1_mcP;                           //!
+   TBranch *b_t1_mcPT;                          //!
+   TBranch *b_t1_mcPX;                          //!
+   TBranch *b_t1_mcPY;                          //!
+   TBranch *b_t1_mcPZ;                          //!
+   TBranch *b_t1_mcPhi;                         //!
+   TBranch *b_t1_mcDecayVertexX;                //!
+   TBranch *b_t1_mcDecayVertexY;                //!
+   TBranch *b_t1_mcDecayVertexZ;                //!
+   TBranch *b_t1_mcDecayVertexFromIPDistance;   //!
+   TBranch *b_t1_mcDecayVertexRho;              //!
+   TBranch *b_t1_mcProductionVertexX;           //!
+   TBranch *b_t1_mcProductionVertexY;           //!
+   TBranch *b_t1_mcProductionVertexZ;           //!
+   TBranch *b_t1_nTracks;                       //!
+   TBranch *b_t1_distance;                      //!
+   TBranch *b_t1_significanceOfDistance;        //!
+   TBranch *b_t1_dx;                            //!
+   TBranch *b_t1_dy;                            //!
+   TBranch *b_t1_dz;                            //!
+   TBranch *b_t1_x;                             //!
+   TBranch *b_t1_y;                             //!
+   TBranch *b_t1_z;                             //!
+   TBranch *b_t1_x_uncertainty;                 //!
+   TBranch *b_t1_y_uncertainty;                 //!
+   TBranch *b_t1_z_uncertainty;                 //!
+   TBranch *b_t1_dr;                            //!
+   TBranch *b_t1_dphi;                          //!
+   TBranch *b_t1_dcosTheta;                     //!
+   TBranch *b_t1_prodVertexX;                   //!
+   TBranch *b_t1_prodVertexY;                   //!
+   TBranch *b_t1_prodVertexZ;                   //!
+   TBranch *b_t1_prodVertexXErr;                //!
+   TBranch *b_t1_prodVertexYErr;                //!
+   TBranch *b_t1_prodVertexZErr;                //!
+   TBranch *b_t1_chiProb;                       //!
+   TBranch *b_t1_genID;                         //!
+   TBranch *b_t1_mcPDG_m;                       //!
+   TBranch *b_t1_mcPDG_gm;                      //!
+   TBranch *b_t1_mcPDG_ggm;                     //!
+   TBranch *b_t1_mcPDG_gggm;                    //!
+   TBranch *b_t1_mcID_m;                        //!
+   TBranch *b_t1_mcID_gm;                       //!
+   TBranch *b_t1_mcID_ggm;                      //!
+   TBranch *b_t1_mcID_gggm;                     //!
+   TBranch *b_t1_mcIsMissing;                   //!
+   TBranch *b_t1_isCloneTrack;                  //!
+   TBranch *b_t1_mcDecayTime;                   //!
+   TBranch *b_t1_charge;                        //!
+   TBranch *b_t1_nDaughters;                    //!
+   TBranch *b_t2_isSignal;                      //!
+   TBranch *b_t2_mcErrors;                      //!
+   TBranch *b_t2_mcPDG;                         //!
+   TBranch *b_t2_mcE;                           //!
+   TBranch *b_t2_mcP;                           //!
+   TBranch *b_t2_mcPT;                          //!
+   TBranch *b_t2_mcPX;                          //!
+   TBranch *b_t2_mcPY;                          //!
+   TBranch *b_t2_mcPZ;                          //!
+   TBranch *b_t2_mcPhi;                         //!
+   TBranch *b_t2_mcDecayVertexX;                //!
+   TBranch *b_t2_mcDecayVertexY;                //!
+   TBranch *b_t2_mcDecayVertexZ;                //!
+   TBranch *b_t2_mcDecayVertexFromIPDistance;   //!
+   TBranch *b_t2_mcDecayVertexRho;              //!
+   TBranch *b_t2_mcProductionVertexX;           //!
+   TBranch *b_t2_mcProductionVertexY;           //!
+   TBranch *b_t2_mcProductionVertexZ;           //!
+   TBranch *b_t2_nTracks;                       //!
+   TBranch *b_t2_distance;                      //!
+   TBranch *b_t2_significanceOfDistance;        //!
+   TBranch *b_t2_dx;                            //!
+   TBranch *b_t2_dy;                            //!
+   TBranch *b_t2_dz;                            //!
+   TBranch *b_t2_x;                             //!
+   TBranch *b_t2_y;                             //!
+   TBranch *b_t2_z;                             //!
+   TBranch *b_t2_x_uncertainty;                 //!
+   TBranch *b_t2_y_uncertainty;                 //!
+   TBranch *b_t2_z_uncertainty;                 //!
+   TBranch *b_t2_dr;                            //!
+   TBranch *b_t2_dphi;                          //!
+   TBranch *b_t2_dcosTheta;                     //!
+   TBranch *b_t2_prodVertexX;                   //!
+   TBranch *b_t2_prodVertexY;                   //!
+   TBranch *b_t2_prodVertexZ;                   //!
+   TBranch *b_t2_prodVertexXErr;                //!
+   TBranch *b_t2_prodVertexYErr;                //!
+   TBranch *b_t2_prodVertexZErr;                //!
+   TBranch *b_t2_chiProb;                       //!
+   TBranch *b_t2_genID;                         //!
+   TBranch *b_t2_mcPDG_m;                       //!
+   TBranch *b_t2_mcPDG_gm;                      //!
+   TBranch *b_t2_mcPDG_ggm;                     //!
+   TBranch *b_t2_mcPDG_gggm;                    //!
+   TBranch *b_t2_mcID_m;                        //!
+   TBranch *b_t2_mcID_gm;                       //!
+   TBranch *b_t2_mcID_ggm;                      //!
+   TBranch *b_t2_mcID_gggm;                     //!
+   TBranch *b_t2_mcIsMissing;                   //!
+   TBranch *b_t2_isCloneTrack;                  //!
+   TBranch *b_t2_mcDecayTime;                   //!
+   TBranch *b_t2_charge;                        //!
+   TBranch *b_t2_nDaughters;                    //!
 
-   readvtx2tree(TTree *tree=0);
+   // Global variables needed for the analysis
+
+   int skip = 0;
+   int ncand = 0;
+   int nvtx = 0;
+   int event_id = 0;
+   int totalvtx;
+   int totalvtxreal;
+   int totalskip;
+   int totalcand;
+   std::vector<Mvertex> vertexlist; // Vector containing event vertices
+   std::vector<int> candidatelist;
+
+   //Tree, File and struct
+
+   TTree *outtree;
+   TFile *outfile;
+   Mvertex *avertex;
+   struct event
+   {
+      int e_id;
+      int e_ncand;
+      int e_nvtx;
+      int e_nvtxreal;
+      int e_skip;
+   };
+
+   struct event counter;
+
+   // Methods for reading the input tree
+   readvtx2tree(TTree *tree = 0);
    virtual ~readvtx2tree();
-   virtual Int_t    Cut(Long64_t entry);
-   virtual Int_t    GetEntry(Long64_t entry);
+   virtual Int_t Cut(Long64_t entry);
+   virtual Int_t GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
-   virtual void     Loop();
-   virtual Bool_t   Notify();
-   virtual void     Show(Long64_t entry = -1);
+   virtual void Init(TTree *tree);
+   virtual void Loop(int nevents = 0);
+   virtual Bool_t Notify();
+   virtual void Show(Long64_t entry = -1);
+
+   // Methods for the analysis
+   void candidateloop(int entry);
+   int candidatescheck(int entry1, int entry2);
+   int addvertex(int m_id, int vR, int vPdg, double x, double y, double z);
+   void updatetree();
+   void resetevent();
+   void booking();
+   void saving();
 };
 
 #endif
 
 #ifdef readvtx2tree_cxx
-readvtx2tree::readvtx2tree(TTree *tree) : fChain(0) 
+readvtx2tree::readvtx2tree(TTree *tree) : fChain(0)
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("data/vtx2mixedB-10k.root");
-      if (!f || !f->IsOpen()) {
+   // if parameter tree is not specified (or zero), connect the file
+   // used to generate this class and read the Tree.
+   if (tree == 0)
+   {
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("data/vtx2mixedB-10k.root");
+      if (!f || !f->IsOpen())
+      {
          f = new TFile("data/vtx2mixedB-10k.root");
       }
-      f->GetObject("variables",tree);
-
+      f->GetObject("variables", tree);
    }
    Init(tree);
 }
 
 readvtx2tree::~readvtx2tree()
 {
-   if (!fChain) return;
+   if (!fChain)
+      return;
    delete fChain->GetCurrentFile();
 }
 
 Int_t readvtx2tree::GetEntry(Long64_t entry)
 {
-// Read contents of entry.
-   if (!fChain) return 0;
+   // Read contents of entry.
+   if (!fChain)
+      return 0;
    return fChain->GetEntry(entry);
 }
 Long64_t readvtx2tree::LoadTree(Long64_t entry)
 {
-// Set the environment to read one entry
-   if (!fChain) return -5;
+   // Set the environment to read one entry
+   if (!fChain)
+      return -5;
    Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
+   if (centry < 0)
+      return centry;
+   if (fChain->GetTreeNumber() != fCurrent)
+   {
       fCurrent = fChain->GetTreeNumber();
       Notify();
    }
@@ -414,7 +503,8 @@ void readvtx2tree::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set branch addresses and branch pointers
-   if (!tree) return;
+   if (!tree)
+      return;
    fChain = tree;
    fCurrent = -1;
    fChain->SetMakeClass(1);
@@ -476,6 +566,9 @@ void readvtx2tree::Init(TTree *tree)
    fChain->SetBranchAddress("vtx2_mcID_gggm", &vtx2_mcID_gggm, &b_vtx2_mcID_gggm);
    fChain->SetBranchAddress("vtx2_mcIsMissing", &vtx2_mcIsMissing, &b_vtx2_mcIsMissing);
    fChain->SetBranchAddress("vtx2_isCloneTrack", &vtx2_isCloneTrack, &b_vtx2_isCloneTrack);
+   fChain->SetBranchAddress("vtx2_mcDecayTime", &vtx2_mcDecayTime, &b_vtx2_mcDecayTime);
+   fChain->SetBranchAddress("vtx2_charge", &vtx2_charge, &b_vtx2_charge);
+   fChain->SetBranchAddress("vtx2_nDaughters", &vtx2_nDaughters, &b_vtx2_nDaughters);
    fChain->SetBranchAddress("t1_isSignal", &t1_isSignal, &b_t1_isSignal);
    fChain->SetBranchAddress("t1_mcErrors", &t1_mcErrors, &b_t1_mcErrors);
    fChain->SetBranchAddress("t1_mcPDG", &t1_mcPDG, &b_t1_mcPDG);
@@ -527,6 +620,9 @@ void readvtx2tree::Init(TTree *tree)
    fChain->SetBranchAddress("t1_mcID_gggm", &t1_mcID_gggm, &b_t1_mcID_gggm);
    fChain->SetBranchAddress("t1_mcIsMissing", &t1_mcIsMissing, &b_t1_mcIsMissing);
    fChain->SetBranchAddress("t1_isCloneTrack", &t1_isCloneTrack, &b_t1_isCloneTrack);
+   fChain->SetBranchAddress("t1_mcDecayTime", &t1_mcDecayTime, &b_t1_mcDecayTime);
+   fChain->SetBranchAddress("t1_charge", &t1_charge, &b_t1_charge);
+   fChain->SetBranchAddress("t1_nDaughters", &t1_nDaughters, &b_t1_nDaughters);
    fChain->SetBranchAddress("t2_isSignal", &t2_isSignal, &b_t2_isSignal);
    fChain->SetBranchAddress("t2_mcErrors", &t2_mcErrors, &b_t2_mcErrors);
    fChain->SetBranchAddress("t2_mcPDG", &t2_mcPDG, &b_t2_mcPDG);
@@ -578,6 +674,9 @@ void readvtx2tree::Init(TTree *tree)
    fChain->SetBranchAddress("t2_mcID_gggm", &t2_mcID_gggm, &b_t2_mcID_gggm);
    fChain->SetBranchAddress("t2_mcIsMissing", &t2_mcIsMissing, &b_t2_mcIsMissing);
    fChain->SetBranchAddress("t2_isCloneTrack", &t2_isCloneTrack, &b_t2_isCloneTrack);
+   fChain->SetBranchAddress("t2_mcDecayTime", &t2_mcDecayTime, &b_t2_mcDecayTime);
+   fChain->SetBranchAddress("t2_charge", &t2_charge, &b_t2_charge);
+   fChain->SetBranchAddress("t2_nDaughters", &t2_nDaughters, &b_t2_nDaughters);
    Notify();
 }
 
@@ -594,16 +693,50 @@ Bool_t readvtx2tree::Notify()
 
 void readvtx2tree::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
-   if (!fChain) return;
+   // Print contents of entry.
+   // If entry is not specified, print current entry
+   if (!fChain)
+      return;
    fChain->Show(entry);
 }
 Int_t readvtx2tree::Cut(Long64_t entry)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
+   // This function may be called from Loop.
+   // returns  1 if entry is accepted.
+   // returns -1 otherwise.
    return 1;
+}
+
+int readvtx2tree::addvertex(int m_id, int vR, int vPdg, double x, double y, double z)
+{
+   int id = vertexlist.size();
+   Mvertex v(id, m_id, vR, vPdg); // Create object
+   v.Addposition(x, y, z);        // Add position to the object
+   vertexlist.push_back(v);       // Add object to the list of vertices (vector)
+
+   return id; // return vertex ID
+}
+
+int readvtx2tree::candidatescheck(int c1, int c2)
+{
+   for (int i = 0; i < candidatelist.size(); i++)
+   {
+      if (candidatelist[i] == c1 || candidatelist[i] == c2)
+      {
+         //cout << "Already existing candidate pair." << endl;
+         return 1;
+      }
+   }
+   //cout << "New candidate pair!" << endl;
+   return 0;
+}
+
+void readvtx2tree::resetevent()
+{
+   skip = 0;
+   ncand = __ncandidates__;
+   nvtx = 0;
+   vertexlist.resize(0);
+   candidatelist.resize(0);
 }
 #endif // #ifdef readvtx2tree_cxx
