@@ -11,12 +11,13 @@ class Mvertex : public TObject
 
 private:
   int id;
-  int m_id;  // mother vertex  id
+  int m_id; // mother vertex id
   int nCharged;
   int nRstructed;
   int nNeutral;
   int nFinalcharged;
   int nRstInter;
+  int nRmissed;
   double position_x, position_y, position_z;
   double radialpos;
   int vReal; // level of the vertex
@@ -32,10 +33,11 @@ public:
     int nRstructed = 0;
     int nFinalcharged = 0;
     int nRstInter = 0;
+    int nRmissed = 0;
     int vReal = 0;
     int vPdg = 0;
   }
-  Mvertex(int id_, int m_id_, int nChar, int nNeut, int nRstructed_, int nFinalcharged_, int nRstInter_, int vReal_, int vPdg_)
+  Mvertex(int id_, int m_id_, int nChar, int nNeut, int nRstructed_, int nFinalcharged_, int nRstInter_, int nRmissed_, int vReal_, int vPdg_)
   {
     id = id_;
     m_id = m_id_;
@@ -44,6 +46,7 @@ public:
     nRstructed = nRstructed_;
     nFinalcharged = nFinalcharged_;
     nRstInter = nRstInter_;
+    nRmissed = nRmissed_;
     vReal = vReal_;
     vPdg = vPdg_;
   }
@@ -56,25 +59,26 @@ public:
   int GetNrstructed() { return nRstructed; }
   int GetNFinalcharged() { return nFinalcharged; }
   int GetNRstInter() { return nRstInter; }
+  int GetNRmissed() { return nRmissed; }
   double GetRadialpos() { return radialpos; }
   int GetReal() { return vReal; }
   int GetvPdg() { return vPdg; }
   void AddId() { id++; }
-  void Setm_id(int m_id_) { m_id = m_id_; }
   void Addcharged() { nCharged++; }
   void Addneutral() { nNeutral++; }
   void Addrstructed() { nRstructed++; }
   void Addfinalcharged() { nFinalcharged++; }
   void AddrstInter() { nRstInter++; }
+  void SetNRmissed(int x) { nRmissed = x; }
   int IsReal() //Test if the vertex is a fake one and return bool value for realness
   {
-    if (nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructible (lvl 4)
+    if (nRstructed >= 2 && nRstInter == 0) // at least 2 reconstructible and no intermediate reconstructible (lvl 4)
     {
       vReal = 4;
       //cout << "Lvl 4" << endl;
       return vReal;
     }
-    else if (nRstInter + nRstructed >= 2) // at least 2 reconstructible (lvl 3)
+    else if (nRstInter + nRstructed >= 2) // at least 2 reconstructible or intermediate reconstructible (lvl 3)
     {
       vReal = 3;
       //cout << "Lvl 3" << endl;
@@ -117,6 +121,7 @@ public:
     nNeutral = vertex.GetNneutral();
     nFinalcharged = vertex.GetNFinalcharged();
     nRstInter = vertex.GetNRstInter();
+    nRmissed = vertex.GetNRmissed();
     position_x = vertex.position_x;
     position_y = vertex.position_y;
     position_z = vertex.position_z;

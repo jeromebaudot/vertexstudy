@@ -23,7 +23,7 @@ contains root and text files with the data to analyse
 - vtx2B0toKsJPsi-1k.root = 1k events B0B0bar where one of the B0 goes to Ks+J/Psi, with 2 particle-vertices reconstructed
 - vtx2mixedB-10k.root = 10 k events with either B0B0bar or B+B-, with 2 particle-vertices reconstructed
 - vtx2continumcc-20k.root = 20 k events e+e- -> ccbar, with 2 particle-vertices reconstructed
-- vtx2tautau-20k.root = 20 k events e+e- -> tau+tau-, with 2 particle-vertices reconstructed
+- vtx2mixedBv3-small.root = 20 k events e+e- -> tau+tau-, with 2 particle-vertices reconstructed
 
 * QUESIONS
 ** General context = how do look like the various event types in Belle II?

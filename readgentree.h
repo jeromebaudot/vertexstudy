@@ -2,7 +2,7 @@
 // This class has been automatically generated on
 // Mon Feb  1 23:01:28 2021 by ROOT version 6.22/06
 // from TTree tree/tree
-// found on file: ./data/B0toKsJPsi-100k.root
+// found on file: ./data/mixedB-100k.root
 //////////////////////////////////////////////////////////
 
 #ifndef readgentree_h
@@ -123,12 +123,16 @@ public:
    TBranch *b_MCParticles_m_seenIn_m_bits;           //!
 
    // Global variables needed for the analysis
-   int nvertex;
-   int nmothers;
    int vtxreal1;
    int vtxreal2;
    int vtxreal3;
    int vtxreal4;
+   //int vtxB;
+   //int vtxB3;
+   //int vtxB4;
+   int Bmesons;
+   int Breal3;
+   int Breal4;
    int Neutral;
    int Charged;
    int Fcharged;
@@ -137,17 +141,26 @@ public:
    int R2charged;
    int RInter;
    int R2Inter;
+   int Rmissed;
    int totalvtx;
    int totalvtxreal;
+   //int totalvtxB;
+   //int totalvtxBreal;
    int totalFcharged;
    int totalRcharged;
    int totalRInter;
+   int totalRmissed;
+   int totalBmesons;
+   int totalBreal;
+   std::vector<double> p_total;
+   std::vector<double> p_transverse;
 
    std::vector<Mvertex> vertexlist; // Vector containing event vertices
 
-   //Tree, File and struc
+   //Tree, File and struct
 
    TTree *outtree;
+   TTree *out_p;
    TFile *outfile;
    Mvertex *avertex;
    struct event
@@ -158,6 +171,9 @@ public:
       int e_nvtxreal2;  //Number of vertices at level 2 in the event
       int e_nvtxreal3;  //Number of vertices at level 3 in the event
       int e_nvtxreal4;  //Number of vertices at level 4 in the event
+      int e_Bmesons;    //Number of B meson vertices
+      int e_Breal3;     //Number of B meson vertices that are level 3
+      int e_Breal4;     //Number of B meson vertices that are level 4
       int e_nNeutral;   //Number of neutral particles in the event
       int e_nCharged;   //Number of charged particles in the event
       int e_nFcharged;  //Number of final charged particles in the event
@@ -166,9 +182,18 @@ public:
       int e_nR2charged; //Number of reconstructible charged particles in the event that belong to vertex w at least 2 reconstructable charged
       int e_nRInter;    //Number of reconstructible charged particles or intermediate reconstructable in the event
       int e_nR2Inter;   //Number of reconstructible charged particles in the event that belong to vertex w at least 2 reconstructable charged
+      int e_nRmissed;   //Number of reconstructible charged particles in the event NOT associated to L3 or L4 vertices
    };
 
    struct event counter;
+
+   struct particles
+   {
+      double p_total;
+      double p_transverse;
+   };
+
+   struct particles momenta;
 
    // Methods for reading the input tree
    readgentree(TTree *tree = 0);
@@ -187,12 +212,13 @@ public:
    void daughterloop(int first, int last, int vId);
    int particlecharge(int entry);
    void identifyVertex(int entry);
-   int addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int vR, int vPdg, double x, double y, double z);
+   int addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int nRmissed, int vR, int vPdg, double x, double y, double z);
    double pTransverse(int id);
+   double pTotal(int id);
+   void Addmomentum(int id);
    double prodAngle(int id);
    void booking();
    void saving();
-   void display();
 };
 
 #endif
@@ -204,10 +230,10 @@ readgentree::readgentree(TTree *tree) : fChain(0)
    // used to generate this class and read the Tree.
    if (tree == 0)
    {
-      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("./data/B0toKsJPsi-100k.root");
+      TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject("./data/mixedB-100k.root");
       if (!f || !f->IsOpen())
       {
-         f = new TFile("./data/B0toKsJPsi-100k.root");
+         f = new TFile("./data/mixedB-100k.root");
       }
       f->GetObject("tree", tree);
    }
@@ -316,12 +342,12 @@ Int_t readgentree::Cut(Long64_t entry)
    return 1;
 }
 
-int readgentree::addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int vR, int vPdg, double x, double y, double z)
+int readgentree::addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInter, int nRmissed, int vR, int vPdg, double x, double y, double z)
 {
    int id = vertexlist.size();
-   Mvertex v(id, m_id, nc, nn, nR, nFc, nRInter, vR, vPdg); // Create object
-   v.Addposition(x, y, z);                                  // Add position to the object
-   vertexlist.push_back(v);                                 // Add object to the list of vertices (vector)
+   Mvertex v(id, m_id, nc, nn, nR, nFc, nRInter, nRmissed, vR, vPdg); // Create object
+   v.Addposition(x, y, z);                                            // Add position to the object
+   vertexlist.push_back(v);                                           // Add object to the list of vertices (vector)
 
    return id; // return vertex ID
 }
@@ -329,6 +355,17 @@ int readgentree::addvertex(int m_id, int nc, int nn, int nR, int nFc, int nRInte
 double readgentree::pTransverse(int id)
 {
    return sqrt(pow(MCParticles_m_momentum_x[id], 2) + pow(MCParticles_m_momentum_y[id], 2));
+}
+
+double readgentree::pTotal(int id)
+{
+   return sqrt(pow(MCParticles_m_momentum_x[id], 2) + pow(MCParticles_m_momentum_y[id], 2) + pow(MCParticles_m_momentum_z[id], 2));
+}
+
+void readgentree::Addmomentum(int id)
+{
+   p_total.push_back(pTotal(id));
+   p_transverse.push_back(pTransverse(id));
 }
 
 double readgentree::prodAngle(int id)
