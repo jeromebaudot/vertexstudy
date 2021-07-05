@@ -10,5 +10,5 @@ void read() {
     gROOT->ProcessLine("t.Loop()");
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
-    cout << "Execution time: " << duration.count() << " ms" << endl;
+    cout << "\n************************************\nExecution time: " << duration.count() << " ms" << endl;
 }
